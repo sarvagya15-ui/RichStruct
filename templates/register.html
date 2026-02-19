@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — RichStruct</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen font-sans text-white overflow-hidden">
+
+  <!-- Video Background -->
+  <div class="fixed inset-0 -z-10 overflow-hidden">
+    <video autoplay muted loop playsinline class="w-full h-full object-cover">
+      <source src="https://media.istockphoto.com/id/1338950858/video/high-tech-startup-concept-innovative-male-software-engineer-standing-doing-big-data-analysis.mp4?s=mp4-640x640-is&k=20&c=F6c8gEIuvgEPmof-5r2Qv0uf_EKQpeYppueq5--2pJg=" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-black/70"></div>
+  </div>
+
+  <!-- Register Card -->
+  <div class="bg-white text-black p-10 rounded-2xl shadow-2xl w-96 text-center backdrop-blur-lg">
+
+    <h1 class="text-3xl font-bold text-indigo-600 mb-6">Create Account</h1>
+
+    <input id="name" type="text" placeholder="Full Name"
+      class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+
+    <input id="email" type="email" placeholder="Email"
+      class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+
+    <input id="password" type="password" placeholder="Password"
+      class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+
+    <input id="confirm" type="password" placeholder="Confirm Password"
+      class="w-full mb-6 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+
+    <button onclick="register()"
+      class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+      Register
+    </button>
+
+    <p id="msg" class="mt-4 text-sm"></p>
+
+    <p class="mt-6 text-sm text-gray-600">
+      Already have an account?
+      <a href="login.html" class="text-indigo-600 font-semibold hover:underline">Login</a>
+    </p>
+
+  </div>
+
+
+  <script>
+    function register(){
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const pass = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm").value;
+      const msg = document.getElementById("msg");
+
+      if(!name || !email || !pass || !confirm){
+        msg.style.color="salmon";
+        msg.textContent="Please fill all fields";
+        return;
+      }
+
+      if(pass !== confirm){
+        msg.style.color="salmon";
+        msg.textContent="Passwords do not match";
+        return;
+      }
+
+      msg.style.color="lightgreen";
+      msg.textContent="Registration successful! Redirecting...";
+
+      setTimeout(()=>{
+        window.location.href="/login";
+      },1500);
+    }
+  </script>
+
+</body>
+</html>
