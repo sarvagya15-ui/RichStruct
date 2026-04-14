@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="{{ url_for('generate_jsonld', schema_type='faq') }}" method="POST">
+
+  <div id="faq-container">
+    <div class="faq-item">
+      <input type="text" name="question[]" placeholder="Question" required>
+      <textarea name="answer[]" placeholder="Answer" required></textarea>
+    </div>
+  </div>
+
+  <button type="button" id="add-faq">Add Row</button>
+  <button type="submit">Generate</button>
+
+</form>
+
+<script>
+document.getElementById('add-faq').addEventListener('click', function() {
+  const container = document.getElementById('faq-container');
+  const newItem = document.createElement('div');
+  newItem.className = 'faq-item';
+  newItem.innerHTML = `
+    <input type="text" name="question[]" placeholder="Question" required>
+    <textarea name="answer[]" placeholder="Answer" required></textarea>
+  `;
+  container.appendChild(newItem);
+});
+</script>
+
+{% endblock %}

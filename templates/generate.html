@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="selection-container">
+  <h1>Select Schema Type</h1>
+
+  <div class="schema-grid">
+    {% for type in schema_types %}
+    <a href="{{ url_for('create_schema', schema_type=type.id) }}" class="schema-card">
+      <i class="fas {{ type.icon }}"></i>
+      <h3>{{ type.name }}</h3>
+      <p>{{ type.desc }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

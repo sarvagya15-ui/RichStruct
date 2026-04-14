@@ -1,0 +1,133 @@
+{% extends 'base.html' %} 
+ 
+{% block title %}Generated Schema - SchemaGen{% endblock %} 
+ 
+{% block content %} 
+<div class="result-container"> 
+    <div class="result-header"> 
+        <h1><i class="fas fa-check-circle"></i> Schema Generated Successfully!</h1> 
+        <p>Your <strong>{{ schema_type.upper() }}</strong> JSON-LD is ready for use on 
+your website.</p> 
+    </div> 
+ 
+    <div class="code-section"> 
+        <div class="code-header"> 
+            <span>JSON-LD Output</span> 
+            <button id="copy-btn" class="btn-copy"><i class="fas fa-copy"></i> Copy 
+Code</button> 
+        </div> 
+        <pre id="json-output"><code>{{ json_data | safe }}</code></pre> 
+    </div> 
+ 
+    <div class="result-actions"> 
+        <a href="{{ url_for('select_schema') }}" class="btn-secondary">Generate 
+Another</a> 
+        <a href="#" class="btn-primary">Validate This Schema <i class="fas fa-arrow
+right"></i></a> 
+    </div> 
+</div> 
+ 
+<script> 
+    document.getElementById('copy-btn').addEventListener('click', function () { 
+        const code = document.getElementById('json-output').innerText; 
+        navigator.clipboard.writeText(code).then(() => { 
+            this.innerHTML = '<i class="fas fa-check"></i> Copied!'; 
+            this.style.background = 'var(--accent)'; 
+            setTimeout(() => { 
+                this.innerHTML = '<i class="fas fa-copy"></i> Copy Code'; 
+                this.style.background = 'rgba(255, 255, 255, 0.1)'; 
+            }, 2000); 
+        }); 
+    }); 
+</script> 
+ 
+<style> 
+    .result-container { 
+        max-width: 900px; 
+        margin: 3rem auto; 
+    } 
+ 
+    .result-header { 
+        text-align: center; 
+        margin-bottom: 2.5rem; 
+    } 
+ 
+    .result-header h1 { 
+        color: var(--accent); 
+        margin-bottom: 0.5rem; 
+    } 
+ 
+    .result-header p { 
+        color: var(--text-muted); 
+    } 
+ 
+    .code-section { 
+        background: #0b1120; 
+        border-radius: 1rem; 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        overflow: hidden; 
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+    } 
+ 
+    .code-header { 
+        background: rgba(255, 255, 255, 0.05); 
+        padding: 0.75rem 1.5rem; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        font-size: 0.85rem; 
+        color: var(--text-muted); 
+        font-weight: 600; 
+    } 
+ 
+    .btn-copy { 
+        background: rgba(255, 255, 255, 0.1); 
+        border: none; 
+        color: white; 
+        padding: 0.4rem 0.8rem; 
+        border-radius: 0.4rem; 
+        cursor: pointer; 
+        font-size: 0.8rem; 
+        transition: all 0.3s; 
+    } 
+ 
+    pre { 
+        margin: 0; 
+        padding: 1.5rem; 
+        color: #818cf8; 
+        background: transparent; 
+        font-family: 'Fira Code', 'Courier New', monospace; 
+        font-size: 0.95rem; 
+        line-height: 1.5; 
+        overflow-x: auto; 
+        white-space: pre-wrap; 
+    } 
+ 
+    .result-actions { 
+        margin-top: 3rem; 
+        display: flex; 
+        justify-content: center; 
+        gap: 1.5rem; 
+    } 
+ 
+    .btn-secondary { 
+        padding: 1rem 2rem; 
+        background: rgba(255, 255, 255, 0.05); 
+        color: white; 
+        text-decoration: none; 
+        border-radius: 0.5rem; 
+        font-weight: 600; 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+    } 
+ 
+    .btn-primary { 
+        padding: 1rem 2rem; 
+        background: var(--primary); 
+        color: white; 
+        text-decoration: none; 
+        border-radius: 0.5rem; 
+        font-weight: 600; 
+    } 
+</style> 
+{% endblock %}
