@@ -1,9 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash 
-from flask_login import LoginManager, login_user, logout_user, login_required, 
-current_user 
+from flask_login import LoginManager, login_user, logout_user, login_required,current_user 
 from models import db, User, Schema, ActivityLog 
-from utils import generate_product_jsonld, generate_faq_jsonld, 
-generate_course_jsonld 
+from utils import generate_product_jsonld, generate_faq_jsonld,generate_course_jsonld 
 from rule_engine import validate_schema_rules 
 import json 
 import os 
