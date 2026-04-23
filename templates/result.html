@@ -1,133 +1,56 @@
 {% extends 'base.html' %} 
- 
 {% block title %}Generated Schema - SchemaGen{% endblock %} 
  
 {% block content %} 
-<div class="result-container"> 
-    <div class="result-header"> 
-        <h1><i class="fas fa-check-circle"></i> Schema Generated Successfully!</h1> 
-        <p>Your <strong>{{ schema_type.upper() }}</strong> JSON-LD is ready for use on 
-your website.</p> 
+<div class="max-w-4xl mx-auto px-6 py-12 w-full"> 
+    <div class="text-center mb-10"> 
+        <div class="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg shadow-emerald-500/20 animate-pulse">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-white mb-3">Schema Generated Successfully!</h1> 
+        <p class="text-slate-400 text-lg">Your <strong class="text-brand-300">{{ schema_type.upper() }}</strong> JSON-LD is ready for use on your website.</p> 
     </div> 
  
-    <div class="code-section"> 
-        <div class="code-header"> 
-            <span>JSON-LD Output</span> 
-            <button id="copy-btn" class="btn-copy"><i class="fas fa-copy"></i> Copy 
-Code</button> 
+    <div class="glass-card rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl"> 
+        <div class="bg-slate-900/80 px-6 py-4 flex justify-between items-center border-b border-slate-700/50"> 
+            <span class="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                <i class="fas fa-code text-brand-400"></i> JSON-LD Output
+            </span> 
+            <button id="copy-btn" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 border border-slate-700 hover:border-brand-500/50">
+                <i class="fas fa-copy"></i> <span>Copy Code</span>
+            </button> 
         </div> 
-        <pre id="json-output"><code>{{ json_data | safe }}</code></pre> 
+        <div class="p-6 bg-black/40 overflow-auto max-h-[60vh]">
+            <pre id="json-output"><code class="text-brand-300 font-mono text-sm leading-relaxed">{{ json_data | safe }}</code></pre> 
+        </div>
     </div> 
  
-    <div class="result-actions"> 
-        <a href="{{ url_for('select_schema') }}" class="btn-secondary">Generate 
-Another</a> 
-        <a href="#" class="btn-primary">Validate This Schema <i class="fas fa-arrow
-right"></i></a> 
+    <div class="mt-10 flex justify-center gap-6"> 
+        <a href="{{ url_for('select_schema') }}" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold py-3 px-8 rounded-xl transition-all hover:border-slate-500">
+            Generate Another
+        </a> 
+        <form action="{{ url_for('validate') }}" method="POST" class="inline">
+            <input type="hidden" name="json_content" value="{{ json_data }}">
+            <button type="submit" class="bg-brand-500 hover:bg-brand-600 text-white font-semibold py-3 px-8 rounded-xl shadow-lg shadow-brand-500/25 transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                Validate This Schema <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
     </div> 
 </div> 
  
 <script> 
     document.getElementById('copy-btn').addEventListener('click', function () { 
         const code = document.getElementById('json-output').innerText; 
+        const btn = this;
         navigator.clipboard.writeText(code).then(() => { 
-            this.innerHTML = '<i class="fas fa-check"></i> Copied!'; 
-            this.style.background = 'var(--accent)'; 
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check text-emerald-400"></i> <span class="text-emerald-400">Copied!</span>'; 
+            btn.classList.add('border-emerald-500/50', 'bg-emerald-500/10');
             setTimeout(() => { 
-                this.innerHTML = '<i class="fas fa-copy"></i> Copy Code'; 
-                this.style.background = 'rgba(255, 255, 255, 0.1)'; 
+                btn.innerHTML = originalHTML; 
+                btn.classList.remove('border-emerald-500/50', 'bg-emerald-500/10');
             }, 2000); 
         }); 
     }); 
 </script> 
- 
-<style> 
-    .result-container { 
-        max-width: 900px; 
-        margin: 3rem auto; 
-    } 
- 
-    .result-header { 
-        text-align: center; 
-        margin-bottom: 2.5rem; 
-    } 
- 
-    .result-header h1 { 
-        color: var(--accent); 
-        margin-bottom: 0.5rem; 
-    } 
- 
-    .result-header p { 
-        color: var(--text-muted); 
-    } 
- 
-    .code-section { 
-        background: #0b1120; 
-        border-radius: 1rem; 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        overflow: hidden; 
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
-    } 
- 
-    .code-header { 
-        background: rgba(255, 255, 255, 0.05); 
-        padding: 0.75rem 1.5rem; 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-        font-size: 0.85rem; 
-        color: var(--text-muted); 
-        font-weight: 600; 
-    } 
- 
-    .btn-copy { 
-        background: rgba(255, 255, 255, 0.1); 
-        border: none; 
-        color: white; 
-        padding: 0.4rem 0.8rem; 
-        border-radius: 0.4rem; 
-        cursor: pointer; 
-        font-size: 0.8rem; 
-        transition: all 0.3s; 
-    } 
- 
-    pre { 
-        margin: 0; 
-        padding: 1.5rem; 
-        color: #818cf8; 
-        background: transparent; 
-        font-family: 'Fira Code', 'Courier New', monospace; 
-        font-size: 0.95rem; 
-        line-height: 1.5; 
-        overflow-x: auto; 
-        white-space: pre-wrap; 
-    } 
- 
-    .result-actions { 
-        margin-top: 3rem; 
-        display: flex; 
-        justify-content: center; 
-        gap: 1.5rem; 
-    } 
- 
-    .btn-secondary { 
-        padding: 1rem 2rem; 
-        background: rgba(255, 255, 255, 0.05); 
-        color: white; 
-        text-decoration: none; 
-        border-radius: 0.5rem; 
-        font-weight: 600; 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-    } 
- 
-    .btn-primary { 
-        padding: 1rem 2rem; 
-        background: var(--primary); 
-        color: white; 
-        text-decoration: none; 
-        border-radius: 0.5rem; 
-        font-weight: 600; 
-    } 
-</style> 
 {% endblock %}

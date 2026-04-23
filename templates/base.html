@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}RichStruct{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+            },
+            accent: '#34d399',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .bg-animated-gradient {
+      background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Glassmorphism utilities */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .glass-nav {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body class="font-sans overflow-x-hidden min-h-screen flex flex-col text-slate-200">
+
+  <!-- Animated Background -->
+  <div class="bg-animated-gradient"></div>
+  
+  <!-- Overlay to darken background slightly for readability -->
+  <div class="fixed inset-0 bg-slate-950/40 -z-10"></div>
+
+  <!-- Navbar -->
+  <nav class="glass-nav sticky top-0 z-50 flex items-center justify-between px-8 py-4 transition-all duration-300">
+    <a href="{{ url_for('index') }}" class="group flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform">
+        <i class="fas fa-code"></i>
+      </div>
+      <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-400 to-purple-400">RichStruct</h1>
+    </a>
+    <div class="space-x-6 text-sm font-medium flex items-center">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('select_schema') }}" class="text-slate-300 hover:text-white transition-colors">Generate</a>
+        <a href="{{ url_for('history') }}" class="text-slate-300 hover:text-white transition-colors">History</a>
+        <a href="{{ url_for('activity_log') }}" class="text-slate-300 hover:text-white transition-colors">Activity</a>
+        <a href="{{ url_for('validate') }}" class="text-slate-300 hover:text-white transition-colors">Validate</a>
+        <div class="h-6 w-px bg-slate-700"></div>
+        <a href="{{ url_for('logout') }}" class="text-rose-400 hover:text-rose-300 transition-colors flex items-center gap-2">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="bg-brand-500 hover:bg-brand-600 text-white px-5 py-2.5 rounded-xl shadow-lg shadow-brand-500/20 transition-all hover:-translate-y-0.5">Login</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- Flash Messages -->
+  <div class="container mx-auto mt-6 px-8 max-w-4xl">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="p-4 mb-4 rounded-xl flex items-center gap-3 animate-[slideIn_0.3s_ease-out] shadow-lg backdrop-blur-md border 
+            {% if category == 'success' %}bg-emerald-500/10 border-emerald-500/20 text-emerald-400
+            {% elif category == 'danger' %}bg-rose-500/10 border-rose-500/20 text-rose-400
+            {% else %}bg-brand-500/10 border-brand-500/20 text-brand-400{% endif %}">
+            <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <main class="flex-grow flex flex-col">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto py-8 text-center text-slate-500 text-sm glass-nav">
+    <p>© 2026 RichStruct — Premium Schema Generator & Validator</p>
+  </footer>
+
+  <style>
+    @keyframes slideIn {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</body>
+</html>

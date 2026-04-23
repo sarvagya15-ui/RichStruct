@@ -1,239 +1,129 @@
 {% extends 'base.html' %} 
- 
 {% block title %}My Saved Schemas - SchemaGen{% endblock %} 
- 
+
 {% block content %} 
-<div class="history-container"> 
-    <div class="history-header"> 
-        <h1><i class="fas fa-history"></i> Your Schema History</h1> 
-        <p>You have generated and saved <strong>{{ schemas|length }}</strong> 
-schemas.</p> 
+<div class="max-w-4xl mx-auto px-6 py-12 w-full"> 
+    <div class="mb-10 border-b border-slate-700/50 pb-6 flex items-end justify-between"> 
+        <div>
+            <h1 class="text-3xl font-bold text-white flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl">
+                    <i class="fas fa-history"></i>
+                </div>
+                Your Schema History
+            </h1> 
+            <p class="text-slate-400 mt-2 ml-14">You have generated and saved <strong class="text-white">{{ schemas|length }}</strong> schemas.</p> 
+        </div>
+        <a href="{{ url_for('select_schema') }}" class="bg-slate-800 border border-slate-700 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+            <i class="fas fa-plus"></i> New Schema
+        </a>
     </div> 
- 
+
     {% if schemas %} 
-    <div class="history-list"> 
+    <div class="space-y-4"> 
         {% for schema in schemas %} 
-        <div class="history-card"> 
-            <div class="card-left"> 
-                <div class="type-badge {{ schema.schema_type }}"> 
-                    <i 
-                        class="fas {% if schema.schema_type == 'product' %}fa-shopping-cart{% 
-elif schema.schema_type == 'faq' %}fa-question-circle{% else %}fa-graduation-cap{% 
-endif %}"></i> 
-                    {{ schema.schema_type|upper }} 
+        <div class="glass-card p-6 rounded-2xl flex items-center justify-between group hover:border-brand-500/50 hover:bg-slate-800/30 transition-all duration-300"> 
+            <div class="flex-grow"> 
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-bold mb-3 uppercase tracking-wider
+                    {% if schema.schema_type == 'product' %}bg-emerald-500/10 text-emerald-400
+                    {% elif schema.schema_type == 'faq' %}bg-brand-500/10 text-brand-400
+                    {% else %}bg-purple-500/10 text-purple-400{% endif %}"> 
+                    <i class="fas {% if schema.schema_type == 'product' %}fa-shopping-cart{% elif schema.schema_type == 'faq' %}fa-question-circle{% else %}fa-graduation-cap{% endif %}"></i> 
+                    {{ schema.schema_type }} 
                 </div> 
-                <h3>{{ schema.schema_name }}</h3> 
-                <span class="timestamp"><i class="far fa-calendar-alt"></i> {{ 
-schema.created_at.strftime('%Y-%m-%d 
-                    %H:%M') }}</span> 
+                <h3 class="text-xl font-semibold text-white mb-1 group-hover:text-brand-300 transition-colors">{{ schema.schema_name }}</h3> 
+                <span class="text-sm text-slate-500 flex items-center gap-2">
+                    <i class="far fa-calendar-alt"></i> {{ schema.created_at.strftime('%Y-%m-%d %H:%M') }}
+                </span> 
             </div> 
-            <div class="card-right"> 
-                <button class="btn-secondary view-code" data-content="{{ 
-schema.json_content }}">View Code</button> 
-                <button class="btn-copy-history" data-content="{{ schema.json_content }}"><i 
-                        class="fas fa-copy"></i></button> 
+            <div class="flex items-center gap-3"> 
+                <button class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all hover:border-brand-500/50 view-code" data-content="{{ schema.json_content }}">
+                    View Code
+                </button> 
+                <button class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 hover:text-white px-3 py-2 rounded-xl transition-all hover:border-accent/50 btn-copy-history" data-content="{{ schema.json_content }}">
+                    <i class="fas fa-copy"></i>
+                </button> 
             </div> 
         </div> 
         {% endfor %} 
     </div> 
     {% else %} 
-    <div class="empty-state"> 
-        <i class="fas fa-folder-open"></i> 
-        <h3>No schemas found!</h3> 
-        <p>Start generating schemas to see them here.</p> 
-        <a href="{{ url_for('select_schema') }}" class="btn-primary">Generate My First 
-Schema</a> 
+    <div class="glass-card text-center py-20 px-6 rounded-3xl border border-dashed border-slate-700"> 
+        <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-500 text-3xl">
+            <i class="fas fa-folder-open"></i> 
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-2">No schemas found!</h3> 
+        <p class="text-slate-400 mb-8">Start generating structured data schemas to see them here.</p> 
+        <a href="{{ url_for('select_schema') }}" class="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-brand-500/25 transition-all hover:-translate-y-0.5">
+            <i class="fas fa-magic"></i> Generate My First Schema
+        </a> 
     </div> 
     {% endif %} 
 </div> 
- 
-<!-- Simple Modal for Viewing Code --> 
-<div id="codeModal" class="modal"> 
-    <div class="modal-content"> 
-        <div class="modal-header"> 
-            <h3>Schema JSON-LD</h3> 
-            <span class="close">&times;</span> 
+
+<!-- Tailwind Modal for Viewing Code --> 
+<div id="codeModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm"> 
+    <div class="glass-card w-full max-w-3xl max-h-[80vh] rounded-2xl flex flex-col mx-4 bg-slate-900 border border-slate-700 overflow-hidden shadow-2xl scale-95 opacity-0 transition-all duration-300" id="modalContent"> 
+        <div class="px-6 py-4 border-b border-slate-700/50 flex justify-between items-center bg-slate-900/80"> 
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fas fa-code text-brand-400"></i> Schema JSON-LD
+            </h3> 
+            <button class="close-modal text-slate-400 hover:text-rose-400 transition-colors text-2xl leading-none">&times;</button> 
         </div> 
-        <pre><code id="modalCode"></code></pre> 
+        <div class="p-6 overflow-auto bg-black/40">
+            <pre><code id="modalCode" class="text-brand-300 font-mono text-sm leading-relaxed"></code></pre> 
+        </div>
     </div> 
 </div> 
- 
+
 <script> 
     // Modal Logic 
     const modal = document.getElementById("codeModal"); 
-    const span = document.getElementsByClassName("close")[0]; 
- 
+    const modalContent = document.getElementById("modalContent");
+    const closeBtn = document.querySelector(".close-modal"); 
+
+    function openModal(content) {
+        document.getElementById("modalCode").innerText = content; 
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        // small delay for animation to trigger
+        setTimeout(() => {
+            modalContent.classList.remove("scale-95", "opacity-0");
+            modalContent.classList.add("scale-100", "opacity-100");
+        }, 10);
+    }
+
+    function closeModal() {
+        modalContent.classList.remove("scale-100", "opacity-100");
+        modalContent.classList.add("scale-95", "opacity-0");
+        setTimeout(() => {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }, 300);
+    }
+
     document.querySelectorAll('.view-code').forEach(btn => { 
         btn.onclick = function () { 
-            document.getElementById("modalCode").innerText = this.getAttribute('data
-content'); 
-            modal.style.display = "block"; 
+            openModal(this.getAttribute('data-content'));
         } 
     }); 
- 
-    span.onclick = function () { modal.style.display = "none"; } 
-    window.onclick = function (event) { if (event.target == modal) modal.style.display = 
-"none"; } 
- 
+
+    closeBtn.onclick = closeModal;
+    window.onclick = function (event) { if (event.target == modal) closeModal(); } 
+
     // Copy Logic 
     document.querySelectorAll('.btn-copy-history').forEach(btn => { 
         btn.onclick = function () { 
             const content = this.getAttribute('data-content'); 
+            const icon = this.querySelector('i');
             navigator.clipboard.writeText(content).then(() => { 
-                const originalColor = this.style.color; 
-                this.style.color = "var(--accent)"; 
-                setTimeout(() => { this.style.color = originalColor; }, 2000); 
+                icon.className = "fas fa-check text-accent";
+                this.classList.add("border-accent/50");
+                setTimeout(() => { 
+                    icon.className = "fas fa-copy"; 
+                    this.classList.remove("border-accent/50");
+                }, 2000); 
             }); 
         } 
     }); 
 </script> 
- 
-<style> 
-    .history-container { 
-        max-width: 1000px; 
-        margin: 3rem auto; 
-    } 
- 
-    .history-header { 
-        margin-bottom: 2.5rem; 
-    } 
- 
-    .history-header h1 { 
-        font-size: 2.2rem; 
-        margin-bottom: 0.5rem; 
-    } 
- 
-    .history-card { 
-        background: var(--card); 
-        border-radius: 1rem; 
-        padding: 1.5rem 2rem; 
-        margin-bottom: 1rem; 
-        border: 1px solid rgba(255, 255, 255, 0.05); 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        transition: all 0.3s ease; 
-    } 
- 
-    .history-card:hover { 
-        border-color: var(--primary); 
-        transform: translateX(5px); 
-    } 
- 
-    .type-badge { 
-        display: inline-flex; 
-        align-items: center; 
-        gap: 0.4rem; 
-        padding: 0.3rem 0.6rem; 
-        border-radius: 0.4rem; 
-        font-size: 0.75rem; 
-        font-weight: 700; 
-        margin-bottom: 0.75rem; 
-    } 
- 
-    .product { 
-        background: rgba(99, 102, 241, 0.1); 
-        color: var(--primary); 
-    } 
- 
-    .faq { 
-        background: rgba(16, 185, 129, 0.1); 
-        color: var(--accent); 
-    } 
- 
-    .course { 
-        background: rgba(245, 158, 11, 0.1); 
-        color: #f59e0b; 
-    } 
- 
-    .timestamp { 
-        display: block; 
-        margin-top: 0.5rem; 
-        font-size: 0.85rem; 
-        color: var(--text-muted); 
-    } 
- 
-    .card-right { 
-        display: flex; 
-        gap: 1rem; 
-    } 
- 
-    .btn-copy-history { 
-        background: none; 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        color: var(--text-muted); 
-        padding: 0.5rem 0.8rem; 
-        border-radius: 0.5rem; 
-        cursor: pointer; 
-        transition: all 0.3s; 
-    } 
- 
-    .btn-copy-history:hover { 
-        color: white; 
-        border-color: white; 
-    } 
- 
-    /* Modal Styles */ 
-    .modal { 
-        display: none; 
-        position: fixed; 
-        z-index: 200; 
-        left: 0; 
-        top: 0; 
-        width: 100%; 
-        height: 100%; 
-        background-color: rgba(0, 0, 0, 0.8); 
-    } 
- 
-    .modal-content { 
-        background-color: #0b1120; 
-        margin: 5% auto; 
-        padding: 0; 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        width: 80%; 
-        max-width: 800px; 
-        border-radius: 1rem; 
-    } 
- 
-    .modal-header { 
-        padding: 1.5rem; 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-    } 
- 
-    .modal-content pre { 
-        padding: 2rem; 
-        overflow: auto; 
-        color: #818cf8; 
-        max-height: 60vh; 
-    } 
- 
-    .close { 
-        color: #aaa; 
-        float: right; 
-        font-size: 28px; 
-        font-weight: bold; 
-        cursor: pointer; 
-    } 
- 
-    .close:hover { 
-        color: white; 
-    } 
- 
-    .empty-state { 
-        text-align: center; 
-        padding: 5rem 2rem; 
-        background: var(--card); 
-        border-radius: 1.5rem; 
-        border: 2px dashed rgba(255, 255, 255, 0.05); 
-    } 
- 
-    .empty-state i { 
-        font-size: 4rem; 
-        color: var(--text-muted); 
-        margin-bottom: 1.5rem; 
-    } 
-</style> 
 {% endblock %}

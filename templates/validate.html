@@ -1,4 +1,111 @@
-div class="score-circle"> 
-<span class="score-number">{{ report.score }}</span> 
-<span class="score-label">Score</span> 
-</div> 
+{% extends 'base.html' %}
+{% block title %}Validate Schema - SchemaGen{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-12 w-full">
+  <div class="mb-10 border-b border-slate-700/50 pb-6">
+    <h1 class="text-3xl font-bold text-white flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-accent/20 text-accent flex items-center justify-center text-xl">
+        <i class="fas fa-check-double"></i>
+      </div>
+      Schema Validator
+    </h1>
+    <p class="text-slate-400 mt-2 ml-14">Paste your JSON-LD schema below to validate it against best practices.</p>
+  </div>
+  
+  <div class="glass-card p-2 rounded-3xl relative overflow-hidden mb-10 border border-slate-700/50">
+    <div class="absolute -top-32 -right-32 w-64 h-64 bg-brand-500/10 rounded-full blur-[60px] pointer-events-none"></div>
+
+    <form action="{{ url_for('validate') }}" method="POST" class="relative z-10 p-6">
+      <div class="mb-4 flex items-center gap-2 px-2">
+        <i class="fas fa-code text-slate-400"></i> <span class="font-semibold text-sm text-slate-300">Input JSON-LD</span>
+      </div>
+      <textarea name="json_content" placeholder="Paste your JSON-LD here..." required spellcheck="false"
+                class="w-full h-80 p-6 bg-slate-900/60 border border-slate-700 rounded-2xl text-emerald-400 font-mono text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all resize-none shadow-inner">{{ input_json }}</textarea>
+      
+      <button type="submit" class="w-full mt-6 bg-brand-500 text-white font-semibold py-4 px-4 rounded-xl shadow-lg shadow-brand-500/25 hover:bg-brand-600 hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
+        <i class="fas fa-play"></i> Run Validation
+      </button>
+    </form>
+  </div>
+
+  {% if report %}
+  <div class="glass-card p-8 rounded-3xl border relative overflow-hidden transition-all duration-500 animate-[slideIn_0.4s_ease-out]
+              {% if report.status == 'success' %}border-emerald-500/50 bg-emerald-500/5
+              {% elif report.status == 'warning' %}border-amber-500/50 bg-amber-500/5
+              {% else %}border-rose-500/50 bg-rose-500/5{% endif %}">
+    
+    <!-- Background glow for report -->
+    <div class="absolute -top-32 -right-32 w-64 h-64 rounded-full blur-[60px] pointer-events-none
+                {% if report.status == 'success' %}bg-emerald-500/10
+                {% elif report.status == 'warning' %}bg-amber-500/10
+                {% else %}bg-rose-500/10{% endif %}"></div>
+
+    <div class="flex items-center justify-between mb-8 relative z-10 border-b border-slate-700/50 pb-6">
+      <div>
+        <h3 class="text-2xl font-bold flex items-center gap-3
+                   {% if report.status == 'success' %}text-emerald-400
+                   {% elif report.status == 'warning' %}text-amber-400
+                   {% else %}text-rose-400{% endif %}">
+          <i class="fas {% if report.status == 'success' %}fa-check-circle{% elif report.status == 'warning' %}fa-exclamation-triangle{% else %}fa-times-circle{% endif %}"></i>
+          {{ report.message }}
+        </h3>
+        <p class="text-slate-300 mt-2">{{ report.details }}</p>
+      </div>
+      
+      <div class="flex flex-col items-center justify-center w-28 h-28 rounded-full border-4 shadow-xl bg-slate-900/50 backdrop-blur-md
+                  {% if report.score >= 80 %}border-emerald-500 text-emerald-400 shadow-emerald-500/20
+                  {% elif report.score >= 50 %}border-amber-500 text-amber-400 shadow-amber-500/20
+                  {% else %}border-rose-500 text-rose-400 shadow-rose-500/20{% endif %}">
+        <span class="text-3xl font-extrabold">{{ report.score }}</span>
+        <span class="text-xs uppercase tracking-widest font-semibold opacity-80 mt-1">Score</span>
+      </div>
+    </div>
+
+    <div class="relative z-10 grid gap-6">
+      {% if report.errors %}
+      <div class="bg-rose-500/10 border border-rose-500/20 rounded-xl p-6">
+        <h4 class="text-lg font-bold text-rose-400 mb-4 flex items-center gap-2">
+          <i class="fas fa-times-circle"></i> Errors ({{ report.error_count }})
+        </h4>
+        <ul class="space-y-3">
+          {% for error in report.errors %}
+          <li class="flex items-start gap-3 text-slate-300 text-sm">
+            <i class="fas fa-circle text-[8px] mt-1.5 text-rose-400/50"></i>
+            <span class="flex-1">{{ error }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if report.warnings %}
+      <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-6">
+        <h4 class="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2">
+          <i class="fas fa-exclamation-triangle"></i> Warnings ({{ report.warning_count }})
+        </h4>
+        <ul class="space-y-3">
+          {% for warning in report.warnings %}
+          <li class="flex items-start gap-3 text-slate-300 text-sm">
+            <i class="fas fa-circle text-[8px] mt-1.5 text-amber-400/50"></i>
+            <span class="flex-1">{{ warning }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if report.status == 'success' and not report.warnings %}
+      <div class="text-emerald-400 font-semibold text-center py-8">
+        <div class="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center text-3xl mx-auto mb-4">
+          <i class="fas fa-award"></i>
+        </div>
+        <p class="text-xl">Perfect!</p>
+        <p class="text-slate-400 mt-2 font-normal">Your schema meets all best practices and validation rules.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

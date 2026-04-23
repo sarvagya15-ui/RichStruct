@@ -1,121 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RichStruct — Schema Generator & Validator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="text-white font-sans overflow-x-hidden">
+{% extends 'base.html' %}
+{% block title %}RichStruct — Schema Generator & Validator{% endblock %}
 
-  <!-- Video Background -->
-  <div class="fixed inset-0 -z-10 overflow-hidden">
-    <video autoplay muted loop playsinline class="w-full h-full object-cover">
-      <source src="https://media.istockphoto.com/id/2191087265/video/close-up-display-of-technical-coding-scripts-on-a-screen.mp4?s=mp4-640x640-is&k=20&c=dK1JVV6IccTOpa5lYxyMEijzitOpIl9xbpMhH5GS-cg=">
-    </video>
-    <div class="absolute inset-0 bg-black/70"></div>
+{% block content %}
+<!-- Hero Section -->
+<section class="text-center py-32 px-6 relative">
+  <!-- Decorative glowing blob -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-500/30 rounded-full blur-[100px] -z-10"></div>
+  
+  <h2 class="text-6xl font-extrabold mb-6 tracking-tight">
+    Generate & Validate <br/>
+    <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-400 to-accent">Schema Instantly</span>
+  </h2>
+  <p class="text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+    Create, test, and deploy structured data markup with real-time validation and live preview. Boost your search visibility without writing code.
+  </p>
+  <a href="{{ url_for('register') }}" class="inline-block bg-brand-500 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg shadow-brand-500/25 hover:bg-brand-600 hover:-translate-y-1 transition-all">
+    Get Started for Free
+  </a>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-24 px-8 max-w-6xl mx-auto">
+  <div class="text-center mb-16">
+    <h3 class="text-3xl font-bold mb-4">Core Features</h3>
+    <div class="w-24 h-1 bg-gradient-to-r from-brand-500 to-accent mx-auto rounded-full"></div>
+  </div>
+  
+  <div class="grid md:grid-cols-3 gap-8">
+    <div class="glass-card p-8 rounded-2xl hover:border-brand-500/50 transition-colors group cursor-default">
+      <div class="w-14 h-14 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+        <i class="fas fa-magic"></i>
+      </div>
+      <h4 class="text-xl font-semibold mb-3 text-white">Schema Generator</h4>
+      <p class="text-slate-400 leading-relaxed">Create structured data for products, reviews, businesses, and more using an intuitive UI.</p>
+    </div>
+
+    <div class="glass-card p-8 rounded-2xl hover:border-accent/50 transition-colors group cursor-default">
+      <div class="w-14 h-14 rounded-xl bg-accent/20 text-accent flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+        <i class="fas fa-check-double"></i>
+      </div>
+      <h4 class="text-xl font-semibold mb-3 text-white">Instant Validator</h4>
+      <p class="text-slate-400 leading-relaxed">Check schema syntax instantly with smart error detection to ensure best practices.</p>
+    </div>
+
+    <div class="glass-card p-8 rounded-2xl hover:border-purple-500/50 transition-colors group cursor-default">
+      <div class="w-14 h-14 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+        <i class="fas fa-rocket"></i>
+      </div>
+      <h4 class="text-xl font-semibold mb-3 text-white">SEO Optimization</h4>
+      <p class="text-slate-400 leading-relaxed">Boost search visibility and get rich results on Google by deploying valid structured data.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Live Preview Section -->
+<section id="preview" class="py-24 px-8 text-center max-w-6xl mx-auto">
+  <div class="text-center mb-16">
+    <h3 class="text-3xl font-bold mb-4">Live Schema Preview</h3>
+    <div class="w-24 h-1 bg-gradient-to-r from-brand-500 to-accent mx-auto rounded-full"></div>
   </div>
 
-  <!-- Navbar -->
-  <nav class="flex items-center justify-between px-8 py-4 bg-black/40 backdrop-blur-md">
-    <h1 class="text-2xl font-bold text-indigo-400">RichStruct</h1>
-    <div class="space-x-6 text-sm font-medium">
-      <a href="#features" class="hover:text-indigo-400">Features</a>
-      <a href="#preview" class="hover:text-indigo-400">Live Preview</a>
-      <a href="#about" class="hover:text-indigo-400">About</a>
-      <button onclick="goLogin()" class="bg-indigo-600 px-4 py-2 rounded-xl shadow hover:bg-indigo-700">
-        Login
-      </button>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="text-center py-24 px-6">
-    <h2 class="text-5xl font-extrabold mb-6">Generate & Validate Schema Instantly</h2>
-    <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
-      Create, test, and deploy structured data markup with real-time validation and live preview.
-    </p>
-    <button onclick="goLogin()" class="bg-indigo-600 px-8 py-3 rounded-2xl text-lg shadow-lg hover:bg-indigo-700 transition">
-      Get Started
-    </button>
-  </section>
-
-  <!-- Features -->
-  <section id="features" class="py-20 px-8">
-    <h3 class="text-3xl font-bold text-center mb-12">Core Features</h3>
-    <div class="grid md:grid-cols-3 gap-8">
-
-      <div class="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg hover:scale-105 transition">
-        <h4 class="text-xl font-semibold mb-3 text-indigo-300">Schema Generator</h4>
-        <p>Create structured data for products, reviews, businesses, and more.</p>
+  <div class="grid md:grid-cols-2 gap-6 text-left">
+    <!-- Input -->
+    <div class="glass-card p-2 rounded-2xl border border-slate-700/50 flex flex-col">
+      <div class="px-4 py-3 border-b border-slate-700/50 flex items-center gap-2">
+        <i class="fas fa-code text-slate-400"></i> <span class="font-semibold text-sm text-slate-300">Input JSON-LD</span>
       </div>
-
-      <div class="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg hover:scale-105 transition">
-        <h4 class="text-xl font-semibold mb-3 text-indigo-300">Instant Validator</h4>
-        <p>Check schema syntax instantly with smart error detection.</p>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg hover:scale-105 transition">
-        <h4 class="text-xl font-semibold mb-3 text-indigo-300">SEO Optimization</h4>
-        <p>Boost search visibility using structured data best practices.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Live Preview Section -->
-  <section id="preview" class="py-20 px-8 text-center">
-    <h3 class="text-3xl font-bold mb-10">Live Schema Preview</h3>
-
-    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-      
-      <!-- Input -->
-      <textarea id="schemaInput" class="w-full h-72 p-4 rounded-xl bg-black/60 border border-indigo-400 text-green-300 font-mono" placeholder="Paste or write JSON-LD schema here..."></textarea>
-
-      <!-- Output -->
-      <pre id="previewBox" class="w-full h-72 p-4 rounded-xl bg-black/60 border border-indigo-400 text-left overflow-auto"></pre>
-
+      <textarea id="schemaInput" class="w-full h-80 p-4 bg-transparent text-emerald-400 font-mono text-sm focus:outline-none resize-none" placeholder="Paste or write JSON-LD schema here..."></textarea>
     </div>
 
-    <button onclick="validateSchema()" class="mt-8 bg-indigo-600 px-8 py-3 rounded-xl hover:bg-indigo-700">
-      Validate Schema
-    </button>
-  </section>
+    <!-- Output -->
+    <div class="glass-card p-2 rounded-2xl border border-slate-700/50 flex flex-col">
+      <div class="px-4 py-3 border-b border-slate-700/50 flex items-center gap-2">
+        <i class="fas fa-terminal text-slate-400"></i> <span class="font-semibold text-sm text-slate-300">Validation Output</span>
+      </div>
+      <pre id="previewBox" class="w-full h-80 p-4 bg-transparent text-slate-300 font-mono text-sm overflow-auto"></pre>
+    </div>
+  </div>
 
-  <!-- About -->
-  <section id="about" class="py-20 px-8 text-center">
-    <h3 class="text-3xl font-bold mb-6">About RichStruct</h3>
-    <p class="max-w-3xl mx-auto text-gray-300">
-      RichStruct simplifies structured data creation and validation through an intuitive interface, live preview, and instant error feedback — making schema implementation accessible for everyone.
-    </p>
-  </section>
+  <button onclick="validateSchema()" class="mt-10 bg-slate-800 border border-slate-700 text-white px-8 py-3 rounded-xl hover:bg-slate-700 hover:border-slate-500 transition-all font-medium flex items-center gap-2 mx-auto shadow-lg">
+    <i class="fas fa-play"></i> Run Validation
+  </button>
+</section>
 
-  <!-- Footer -->
-  <footer class="bg-black/60 text-center py-6">
-    <p>© 2026 RichStruct — Schema Generator & Validator System</p>
-  </footer>
-
-  <!-- Script -->
-  <script>
-
-    function goLogin(){
-      window.location.href = "/login";
+<!-- Script -->
+<script>
+  function validateSchema() {
+    const input = document.getElementById('schemaInput').value;
+    const preview = document.getElementById('previewBox');
+    
+    if (!input.trim()) {
+      preview.textContent = 'Please enter some JSON-LD to validate.';
+      preview.style.color = '#94a3b8'; // text-slate-400
+      return;
     }
-
-    function validateSchema() {
-      const input = document.getElementById('schemaInput').value;
-      const preview = document.getElementById('previewBox');
-      try {
-        const parsed = JSON.parse(input);
-        preview.textContent = JSON.stringify(parsed, null, 2);
-        preview.style.color = '#86efac';
-      } catch (err) {
-        preview.textContent = 'Invalid JSON: ' + err.message;
-        preview.style.color = '#fca5a5';
-      }
+    
+    try {
+      const parsed = JSON.parse(input);
+      preview.textContent = JSON.stringify(parsed, null, 2);
+      preview.style.color = '#34d399'; // text-accent
+    } catch (err) {
+      preview.textContent = 'Invalid JSON:\n' + err.message;
+      preview.style.color = '#fb7185'; // text-rose-400
     }
-
-  </script>
-
-</body>
-</html>
+  }
+</script>
+{% endblock %}

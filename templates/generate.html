@@ -1,18 +1,39 @@
 {% extends 'base.html' %}
+{% block title %}Select Schema — RichStruct{% endblock %}
+
 {% block content %}
+<div class="max-w-5xl mx-auto px-6 py-12 flex-grow flex flex-col justify-center">
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-extrabold text-white mb-4 tracking-tight">Select Schema Type</h1>
+    <p class="text-slate-400 text-lg">Choose a structured data type to generate for your website.</p>
+  </div>
 
-<div class="selection-container">
-  <h1>Select Schema Type</h1>
-
-  <div class="schema-grid">
+  <div class="grid md:grid-cols-3 gap-6">
     {% for type in schema_types %}
-    <a href="{{ url_for('create_schema', schema_type=type.id) }}" class="schema-card">
-      <i class="fas {{ type.icon }}"></i>
-      <h3>{{ type.name }}</h3>
-      <p>{{ type.desc }}</p>
+    <a href="{{ url_for('create_schema', schema_type=type.id) }}" 
+       class="glass-card p-8 rounded-2xl group hover:-translate-y-2 hover:border-brand-500/50 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 block relative overflow-hidden">
+      
+      <!-- Decorative background glow -->
+      <div class="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+      <div class="relative z-10">
+        <div class="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-3xl mb-6 
+                    {% if type.id == 'product' %}text-emerald-400 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/50
+                    {% elif type.id == 'faq' %}text-brand-400 group-hover:bg-brand-500/20 group-hover:border-brand-500/50
+                    {% else %}text-purple-400 group-hover:bg-purple-500/20 group-hover:border-purple-500/50{% endif %} 
+                    transition-all duration-300">
+          <i class="fas {{ type.icon }}"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-3">{{ type.name }}</h3>
+        <p class="text-slate-400 leading-relaxed">{{ type.desc }}</p>
+        
+        <div class="mt-6 flex items-center text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
+          <span>Generate Now</span>
+          <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+        </div>
+      </div>
     </a>
     {% endfor %}
   </div>
 </div>
-
 {% endblock %}

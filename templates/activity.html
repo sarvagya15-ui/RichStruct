@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Activity Log - SchemaGen{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-12 w-full">
+  <div class="mb-10 border-b border-slate-700/50 pb-6">
+    <h1 class="text-3xl font-bold text-white flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
+        <i class="fas fa-list-alt"></i>
+      </div>
+      Activity Log
+    </h1>
+    <p class="text-slate-400 mt-2 ml-14">Review your recent actions and generated schemas.</p>
+  </div>
+
+  {% if logs %}
+  <div class="space-y-4">
+    {% for log in logs %}
+    <div class="glass-card flex items-center justify-between p-5 rounded-2xl group hover:border-purple-500/50 hover:bg-slate-800/30 transition-all duration-300">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-purple-400 group-hover:border-purple-500/30 transition-colors">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white group-hover:text-purple-300 transition-colors">{{ log.action }}</h4>
+          <span class="text-xs font-medium text-slate-500 flex items-center gap-2 mt-1">
+            <i class="far fa-clock"></i> {{ log.created_at.strftime('%Y-%m-%d %H:%M') }}
+          </span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="glass-card text-center py-20 px-6 rounded-3xl border border-dashed border-slate-700">
+    <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-500 text-3xl">
+      <i class="fas fa-box-open"></i>
+    </div>
+    <h3 class="text-2xl font-bold text-white mb-2">No activity yet.</h3>
+    <p class="text-slate-400">Generate some schemas to see your activity here.</p>
+    <a href="{{ url_for('select_schema') }}" class="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-brand-500/25 transition-all hover:-translate-y-0.5 mt-8">
+      <i class="fas fa-magic"></i> Create a Schema
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,31 +1,84 @@
 {% extends 'base.html' %}
+{% block title %}Generate FAQ Schema — RichStruct{% endblock %}
+
 {% block content %}
-
-<form action="{{ url_for('generate_jsonld', schema_type='faq') }}" method="POST">
-
-  <div id="faq-container">
-    <div class="faq-item">
-      <input type="text" name="question[]" placeholder="Question" required>
-      <textarea name="answer[]" placeholder="Answer" required></textarea>
-    </div>
+<div class="max-w-3xl mx-auto px-6 py-12 w-full">
+  <div class="mb-8">
+    <a href="{{ url_for('select_schema') }}" class="text-slate-400 hover:text-white transition-colors inline-flex items-center text-sm font-medium">
+      <i class="fas fa-arrow-left mr-2"></i> Back to Schemas
+    </a>
   </div>
 
-  <button type="button" id="add-faq">Add Row</button>
-  <button type="submit">Generate</button>
+  <div class="glass-card p-10 rounded-3xl relative overflow-hidden">
+    <div class="absolute -top-32 -right-32 w-64 h-64 bg-brand-500/20 rounded-full blur-[60px] pointer-events-none"></div>
 
-</form>
+    <div class="relative z-10">
+      <div class="flex items-center gap-4 mb-8 border-b border-slate-700/50 pb-6">
+        <div class="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-white">FAQ Schema</h2>
+          <p class="text-sm text-slate-400">Generate rich snippets for frequently asked questions</p>
+        </div>
+      </div>
+      
+      <form action="{{ url_for('generate_jsonld', schema_type='faq') }}" method="POST">
+
+        <div id="faq-container" class="space-y-6 mb-8">
+          <div class="faq-item p-6 bg-slate-900/40 border border-slate-700/50 rounded-2xl relative group transition-all hover:border-slate-600">
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-300 mb-2">Question</label>
+              <input type="text" name="question[]" placeholder="e.g. What is RichStruct?" required
+                     class="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Answer</label>
+              <textarea name="answer[]" placeholder="Provide a detailed answer." required
+                        class="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all h-24 resize-none"></textarea>
+            </div>
+            <!-- Remove button (hidden for first item) -->
+            <button type="button" class="remove-faq hidden absolute -top-3 -right-3 w-8 h-8 bg-rose-500 text-white rounded-full items-center justify-center shadow-lg hover:bg-rose-600 transition-colors">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <button type="button" id="add-faq" class="flex-1 bg-slate-800 border border-slate-700 text-white font-medium py-4 px-4 rounded-xl hover:bg-slate-700 hover:border-slate-500 transition-all flex items-center justify-center gap-2">
+            <i class="fas fa-plus"></i> Add Another Question
+          </button>
+          
+          <button type="submit" class="flex-1 bg-brand-500 text-white font-semibold py-4 px-4 rounded-xl shadow-lg shadow-brand-500/25 hover:bg-brand-600 hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
+            <i class="fas fa-magic"></i> Generate Schema
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 <script>
 document.getElementById('add-faq').addEventListener('click', function() {
   const container = document.getElementById('faq-container');
   const newItem = document.createElement('div');
-  newItem.className = 'faq-item';
+  newItem.className = 'faq-item p-6 bg-slate-900/40 border border-slate-700/50 rounded-2xl relative group transition-all hover:border-slate-600 mt-6 animate-[slideIn_0.3s_ease-out]';
   newItem.innerHTML = `
-    <input type="text" name="question[]" placeholder="Question" required>
-    <textarea name="answer[]" placeholder="Answer" required></textarea>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-slate-300 mb-2">Question</label>
+      <input type="text" name="question[]" placeholder="New Question" required
+             class="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-300 mb-2">Answer</label>
+      <textarea name="answer[]" placeholder="Detailed answer" required
+                class="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all h-24 resize-none"></textarea>
+    </div>
+    <button type="button" class="remove-faq absolute -top-3 -right-3 w-8 h-8 bg-rose-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-rose-600 transition-colors cursor-pointer" onclick="this.parentElement.remove()">
+      <i class="fas fa-times"></i>
+    </button>
   `;
   container.appendChild(newItem);
 });
 </script>
-
 {% endblock %}
