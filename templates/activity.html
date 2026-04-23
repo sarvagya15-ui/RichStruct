@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Activity Log - SchemaGen{% endblock %}
+
+{% block content %}
+<div class="activity-container">
+    <div class="activity-header">
+        <h1><i class="fas fa-list-ul"></i> Your Activity Log</h1>
+        <p>A detailed history of your actions within the platform.</p>
+    </div>
+
+    <div class="activity-card">
+        {% if logs %}
+        <table class="activity-table">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td class="action-cell">
+                        <i class="fas fa-circle-notch"></i>
+                        {{ log.action }}
+                    </td>
+                    <td class="time-cell">{{ log.created_at.strftime('%H:%M:%S') }}</td>
+                    <td class="date-cell">{{ log.created_at.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-shoe-prints"></i>
+            <h3>No activity recorded yet!</h3>
+            <p>Start using the tool to see your logs here.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .activity-container {
+        max-width: 900px;
+        margin: 3rem auto;
+    }
+
+    .activity-header {
+        margin-bottom: 2rem;
+    }
+
+    .activity-card {
+        background: var(--card);
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+    }
+
+    .activity-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .activity-table th {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1rem 1.5rem;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .activity-table td {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        font-size: 0.95rem;
+    }
+
+    .action-cell {
+        font-weight: 500;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .action-cell i {
+        font-size: 0.5rem;
+        color: var(--primary);
+    }
+
+    .time-cell,
+    .date-cell {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+        color: var(--text-muted);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+</style>
+{% endblock %}

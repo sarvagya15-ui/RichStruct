@@ -1,239 +1,231 @@
-{% extends 'base.html' %} 
- 
-{% block title %}My Saved Schemas - SchemaGen{% endblock %} 
- 
-{% block content %} 
-<div class="history-container"> 
-    <div class="history-header"> 
-        <h1><i class="fas fa-history"></i> Your Schema History</h1> 
-        <p>You have generated and saved <strong>{{ schemas|length }}</strong> 
-schemas.</p> 
-    </div> 
- 
-    {% if schemas %} 
-    <div class="history-list"> 
-        {% for schema in schemas %} 
-        <div class="history-card"> 
-            <div class="card-left"> 
-                <div class="type-badge {{ schema.schema_type }}"> 
-                    <i 
-                        class="fas {% if schema.schema_type == 'product' %}fa-shopping-cart{% 
-elif schema.schema_type == 'faq' %}fa-question-circle{% else %}fa-graduation-cap{% 
-endif %}"></i> 
-                    {{ schema.schema_type|upper }} 
-                </div> 
-                <h3>{{ schema.schema_name }}</h3> 
-                <span class="timestamp"><i class="far fa-calendar-alt"></i> {{ 
-schema.created_at.strftime('%Y-%m-%d 
-                    %H:%M') }}</span> 
-            </div> 
-            <div class="card-right"> 
-                <button class="btn-secondary view-code" data-content="{{ 
-schema.json_content }}">View Code</button> 
-                <button class="btn-copy-history" data-content="{{ schema.json_content }}"><i 
-                        class="fas fa-copy"></i></button> 
-            </div> 
-        </div> 
-        {% endfor %} 
-    </div> 
-    {% else %} 
-    <div class="empty-state"> 
-        <i class="fas fa-folder-open"></i> 
-        <h3>No schemas found!</h3> 
-        <p>Start generating schemas to see them here.</p> 
-        <a href="{{ url_for('select_schema') }}" class="btn-primary">Generate My First 
-Schema</a> 
-    </div> 
-    {% endif %} 
-</div> 
- 
-<!-- Simple Modal for Viewing Code --> 
-<div id="codeModal" class="modal"> 
-    <div class="modal-content"> 
-        <div class="modal-header"> 
-            <h3>Schema JSON-LD</h3> 
-            <span class="close">&times;</span> 
-        </div> 
-        <pre><code id="modalCode"></code></pre> 
-    </div> 
-</div> 
- 
-<script> 
-    // Modal Logic 
-    const modal = document.getElementById("codeModal"); 
-    const span = document.getElementsByClassName("close")[0]; 
- 
-    document.querySelectorAll('.view-code').forEach(btn => { 
-        btn.onclick = function () { 
-            document.getElementById("modalCode").innerText = this.getAttribute('data
-content'); 
-            modal.style.display = "block"; 
-        } 
-    }); 
- 
-    span.onclick = function () { modal.style.display = "none"; } 
-    window.onclick = function (event) { if (event.target == modal) modal.style.display = 
-"none"; } 
- 
-    // Copy Logic 
-    document.querySelectorAll('.btn-copy-history').forEach(btn => { 
-        btn.onclick = function () { 
-            const content = this.getAttribute('data-content'); 
-            navigator.clipboard.writeText(content).then(() => { 
-                const originalColor = this.style.color; 
-                this.style.color = "var(--accent)"; 
-                setTimeout(() => { this.style.color = originalColor; }, 2000); 
-            }); 
-        } 
-    }); 
-</script> 
- 
-<style> 
-    .history-container { 
-        max-width: 1000px; 
-        margin: 3rem auto; 
-    } 
- 
-    .history-header { 
-        margin-bottom: 2.5rem; 
-    } 
- 
-    .history-header h1 { 
-        font-size: 2.2rem; 
-        margin-bottom: 0.5rem; 
-    } 
- 
-    .history-card { 
-        background: var(--card); 
-        border-radius: 1rem; 
-        padding: 1.5rem 2rem; 
-        margin-bottom: 1rem; 
-        border: 1px solid rgba(255, 255, 255, 0.05); 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        transition: all 0.3s ease; 
-    } 
- 
-    .history-card:hover { 
-        border-color: var(--primary); 
-        transform: translateX(5px); 
-    } 
- 
-    .type-badge { 
-        display: inline-flex; 
-        align-items: center; 
-        gap: 0.4rem; 
-        padding: 0.3rem 0.6rem; 
-        border-radius: 0.4rem; 
-        font-size: 0.75rem; 
-        font-weight: 700; 
-        margin-bottom: 0.75rem; 
-    } 
- 
-    .product { 
-        background: rgba(99, 102, 241, 0.1); 
-        color: var(--primary); 
-    } 
- 
-    .faq { 
-        background: rgba(16, 185, 129, 0.1); 
-        color: var(--accent); 
-    } 
- 
-    .course { 
-        background: rgba(245, 158, 11, 0.1); 
-        color: #f59e0b; 
-    } 
- 
-    .timestamp { 
-        display: block; 
-        margin-top: 0.5rem; 
-        font-size: 0.85rem; 
-        color: var(--text-muted); 
-    } 
- 
-    .card-right { 
-        display: flex; 
-        gap: 1rem; 
-    } 
- 
-    .btn-copy-history { 
-        background: none; 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        color: var(--text-muted); 
-        padding: 0.5rem 0.8rem; 
-        border-radius: 0.5rem; 
-        cursor: pointer; 
-        transition: all 0.3s; 
-    } 
- 
-    .btn-copy-history:hover { 
-        color: white; 
-        border-color: white; 
-    } 
- 
-    /* Modal Styles */ 
-    .modal { 
-        display: none; 
-        position: fixed; 
-        z-index: 200; 
-        left: 0; 
-        top: 0; 
-        width: 100%; 
-        height: 100%; 
-        background-color: rgba(0, 0, 0, 0.8); 
-    } 
- 
-    .modal-content { 
-        background-color: #0b1120; 
-        margin: 5% auto; 
-        padding: 0; 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        width: 80%; 
-        max-width: 800px; 
-        border-radius: 1rem; 
-    } 
- 
-    .modal-header { 
-        padding: 1.5rem; 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-    } 
- 
-    .modal-content pre { 
-        padding: 2rem; 
-        overflow: auto; 
-        color: #818cf8; 
-        max-height: 60vh; 
-    } 
- 
-    .close { 
-        color: #aaa; 
-        float: right; 
-        font-size: 28px; 
-        font-weight: bold; 
-        cursor: pointer; 
-    } 
- 
-    .close:hover { 
-        color: white; 
-    } 
- 
-    .empty-state { 
-        text-align: center; 
-        padding: 5rem 2rem; 
-        background: var(--card); 
-        border-radius: 1.5rem; 
-        border: 2px dashed rgba(255, 255, 255, 0.05); 
-    } 
- 
-    .empty-state i { 
-        font-size: 4rem; 
-        color: var(--text-muted); 
-        margin-bottom: 1.5rem; 
-    } 
-</style> 
+{% extends 'base.html' %}
+
+{% block title %}My Saved Schemas - SchemaGen{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <div class="history-header">
+        <h1><i class="fas fa-history"></i> Your Schema History</h1>
+        <p>You have generated and saved <strong>{{ schemas|length }}</strong> schemas.</p>
+    </div>
+
+    {% if schemas %}
+    <div class="history-list">
+        {% for schema in schemas %}
+        <div class="history-card">
+            <div class="card-left">
+                <div class="type-badge {{ schema.schema_type }}">
+                    <i
+                        class="fas {% if schema.schema_type == 'product' %}fa-shopping-cart{% elif schema.schema_type == 'faq' %}fa-question-circle{% else %}fa-graduation-cap{% endif %}"></i>
+                    {{ schema.schema_type|upper }}
+                </div>
+                <h3>{{ schema.schema_name }}</h3>
+                <span class="timestamp"><i class="far fa-calendar-alt"></i> {{ schema.created_at.strftime('%Y-%m-%d
+                    %H:%M') }}</span>
+            </div>
+            <div class="card-right">
+                <button class="btn-secondary view-code" data-content="{{ schema.json_content }}">View Code</button>
+                <button class="btn-copy-history" data-content="{{ schema.json_content }}"><i
+                        class="fas fa-copy"></i></button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-folder-open"></i>
+        <h3>No schemas found!</h3>
+        <p>Start generating schemas to see them here.</p>
+        <a href="{{ url_for('select_schema') }}" class="btn-primary">Generate My First Schema</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Simple Modal for Viewing Code -->
+<div id="codeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Schema JSON-LD</h3>
+            <span class="close">&times;</span>
+        </div>
+        <pre><code id="modalCode"></code></pre>
+    </div>
+</div>
+
+<script>
+    // Modal Logic
+    const modal = document.getElementById("codeModal");
+    const span = document.getElementsByClassName("close")[0];
+
+    document.querySelectorAll('.view-code').forEach(btn => {
+        btn.onclick = function () {
+            document.getElementById("modalCode").innerText = this.getAttribute('data-content');
+            modal.style.display = "block";
+        }
+    });
+
+    span.onclick = function () { modal.style.display = "none"; }
+    window.onclick = function (event) { if (event.target == modal) modal.style.display = "none"; }
+
+    // Copy Logic
+    document.querySelectorAll('.btn-copy-history').forEach(btn => {
+        btn.onclick = function () {
+            const content = this.getAttribute('data-content');
+            navigator.clipboard.writeText(content).then(() => {
+                const originalColor = this.style.color;
+                this.style.color = "var(--accent)";
+                setTimeout(() => { this.style.color = originalColor; }, 2000);
+            });
+        }
+    });
+</script>
+
+<style>
+    .history-container {
+        max-width: 1000px;
+        margin: 3rem auto;
+    }
+
+    .history-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .history-header h1 {
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .history-card {
+        background: var(--card);
+        border-radius: 1rem;
+        padding: 1.5rem 2rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .history-card:hover {
+        border-color: var(--primary);
+        transform: translateX(5px);
+    }
+
+    .type-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+    }
+
+    .product {
+        background: rgba(99, 102, 241, 0.1);
+        color: var(--primary);
+    }
+
+    .faq {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--accent);
+    }
+
+    .course {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+    }
+
+    .timestamp {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .card-right {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn-copy-history {
+        background: none;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-muted);
+        padding: 0.5rem 0.8rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-copy-history:hover {
+        color: white;
+        border-color: white;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 200;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-content {
+        background-color: #0b1120;
+        margin: 5% auto;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 80%;
+        max-width: 800px;
+        border-radius: 1rem;
+    }
+
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-content pre {
+        padding: 2rem;
+        overflow: auto;
+        color: #818cf8;
+        max-height: 60vh;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+        background: var(--card);
+        border-radius: 1.5rem;
+        border: 2px dashed rgba(255, 255, 255, 0.05);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+    }
+</style>
 {% endblock %}

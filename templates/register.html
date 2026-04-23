@@ -16,33 +16,40 @@
     <div class="absolute inset-0 bg-black/70"></div>
   </div>
   
-  <!-- Register Form -->
-
-  <form method="post" id="registerForm" novalidate>
-
   <!-- Register Card -->
   <div class="bg-white text-black p-10 rounded-2xl shadow-2xl w-96 text-center backdrop-blur-lg">
 
     <h1 class="text-3xl font-bold text-indigo-600 mb-6">Create Account</h1>
 
-    <input id="name" name="name" type="text" placeholder="Full Name"
-      class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="mb-4 p-3 rounded-lg text-sm {% if category == 'danger' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-    <input id="email" name = 'email' type="email" placeholder="Email"
-      class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    <form method="POST" action="/register">
+      <input id="username" name="username" type="text" placeholder="Username" required
+        class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
-    <input id="password" name = "password" type="password" placeholder="Password"
-      class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      <input id="email" name="email" type="email" placeholder="Email" required
+        class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
-    <input id="confirm" name = "confirm_password" type="password" placeholder="Confirm Password"
-      class="w-full mb-6 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      <input id="password" name="password" type="password" placeholder="Password" required
+        class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
-    <button onclick="register()"
-      class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
-      Register
-    </button>
+      <input id="confirm" name="confirm_password" type="password" placeholder="Confirm Password" required
+        class="w-full mb-6 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
-    <p id="msg" class="mt-4 text-sm"></p>
+      <button type="submit"
+        class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+        Register
+      </button>
+    </form>
 
     <p class="mt-6 text-sm text-gray-600">
       Already have an account?
@@ -50,36 +57,6 @@
     </p>
 
   </div>
-
-
-  <script>
-    function register(){
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const pass = document.getElementById("password").value;
-      const confirm = document.getElementById("confirm").value;
-      const msg = document.getElementById("msg");
-
-      if(!name || !email || !pass || !confirm){
-        msg.style.color="salmon";
-        msg.textContent="Please fill all fields";
-        return;
-      }
-
-      if(pass !== confirm){
-        msg.style.color="salmon";
-        msg.textContent="Passwords do not match";
-        return;
-      }
-
-      msg.style.color="lightgreen";
-      msg.textContent="Registration successful! Redirecting...";
-
-      setTimeout(()=>{
-        window.location.href="/login";
-      },1500);
-    }
-  </script>
 
 
 
