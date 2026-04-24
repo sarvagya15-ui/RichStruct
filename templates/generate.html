@@ -1,120 +1,44 @@
 {% extends 'base.html' %}
 
-{% block title %}Select Schema Type - SchemaGen{% endblock %}
+{% block title %}Select Schema Type - SchemaGemPro{% endblock %}
 
 {% block content %}
-<div class="selection-container">
-    <div class="selection-header">
-        <h1>What would you like to generate today?</h1>
-        <p>Select a schema type to begin. We'll guide you through the process.</p>
+<div class="animate-fade-in-up max-w-5xl mx-auto">
+    <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">What would you like to generate today?</h1>
+        <p class="text-lg text-slate-400">Select a schema type to begin. We'll guide you through the process.</p>
     </div>
 
-    <div class="schema-grid">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {% for type in schema_types %}
-        <a href="{{ url_for('create_schema', schema_type=type.id) }}" class="schema-card">
-            <div class="schema-icon">
-                <i class="fas {{ type.icon }}"></i>
-            </div>
-            <h3>{{ type.name }}</h3>
-            <p>{{ type.desc }}</p>
-            <div class="card-footer">
-                <span>Select Type</span>
-                <i class="fas fa-arrow-right"></i>
+        <a href="{{ url_for('create_schema', schema_type=type.id) }}" class="group block relative">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-3xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+            
+            <div class="relative h-full bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl flex flex-col items-center text-center transition-all duration-300 group-hover:-translate-y-2 group-hover:bg-slate-900/80 overflow-hidden">
+                <!-- Mac-style Terminal Header -->
+                <div class="w-full px-6 py-4 bg-slate-950/40 border-b border-white/5 flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+                    <span class="text-[10px] font-mono text-slate-500 ml-auto uppercase tracking-wider">{{ type.name }}.json</span>
+                </div>
+                
+                <div class="p-8 flex flex-col items-center h-full w-full">
+                <div class="w-20 h-20 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-3xl mb-6 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-300 shadow-lg group-hover:shadow-indigo-500/30">
+                    <i class="fas {{ type.icon }}"></i>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-white mb-3">{{ type.name }}</h3>
+                <p class="text-slate-400 mb-8 flex-grow">{{ type.desc }}</p>
+                
+                <div class="flex items-center gap-2 text-indigo-400 font-semibold group-hover:text-indigo-300 transition-colors">
+                    <span>Select Type</span>
+                    <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+                </div>
             </div>
         </a>
         {% endfor %}
     </div>
 </div>
-
-<style>
-    .selection-header {
-        text-align: center;
-        margin-bottom: 3rem;
-    }
-
-    .selection-header h1 {
-        font-size: 2.2rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .selection-header p {
-        color: var(--text-muted);
-    }
-
-    .schema-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-
-    .schema-card {
-        background: var(--card);
-        padding: 2.5rem;
-        border-radius: 1.5rem;
-        text-decoration: none;
-        color: var(--text);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .schema-card:hover {
-        transform: translateY(-10px);
-        border-color: var(--primary);
-        box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.3);
-    }
-
-    .schema-icon {
-        width: 70px;
-        height: 70px;
-        background: rgba(99, 102, 241, 0.1);
-        border-radius: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1.5rem;
-        color: var(--primary);
-        font-size: 2rem;
-        transition: all 0.3s ease;
-    }
-
-    .schema-card:hover .schema-icon {
-        background: var(--primary);
-        color: white;
-    }
-
-    .schema-card h3 {
-        margin-bottom: 0.75rem;
-        font-size: 1.4rem;
-    }
-
-    .schema-card p {
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        margin-bottom: 2rem;
-        flex: 1;
-    }
-
-    .card-footer {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--primary);
-        font-weight: 600;
-        font-size: 0.9rem;
-        opacity: 0.7;
-        transition: opacity 0.3s ease;
-    }
-
-    .schema-card:hover .card-footer {
-        opacity: 1;
-    }
-</style>
 {% endblock %}

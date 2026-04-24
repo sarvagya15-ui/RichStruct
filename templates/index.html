@@ -1,139 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RichStruct — Schema Generator & Validator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="text-white font-sans overflow-x-hidden">
+{% extends 'base.html' %}
 
-  <!-- Video Background -->
-  <div class="fixed inset-0 -z-10 overflow-hidden">
-    <video autoplay muted loop playsinline class="w-full h-full object-cover">
-      <source src="https://media.istockphoto.com/id/2191087265/video/close-up-display-of-technical-coding-scripts-on-a-screen.mp4?s=mp4-640x640-is&k=20&c=dK1JVV6IccTOpa5lYxyMEijzitOpIl9xbpMhH5GS-cg=">
-    </video>
-    <div class="absolute inset-0 bg-black/70"></div>
+{% block title %}SchemaGemPro — Premium Schema Generator{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="flex flex-col justify-center items-center relative min-h-[70vh]">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+  
+  <div class="text-center px-6 max-w-4xl z-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-indigo-300 mb-8 animate-fade-in-up">
+      <span class="flex h-2 w-2 rounded-full bg-indigo-500 animate-pulse"></span>
+      Next-Generation Schema Architecture
+    </div>
+    
+    <h2 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight animate-fade-in-up delay-100">
+      Structure the web with <br />
+      <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 pb-2 inline-block">
+        absolute precision.
+      </span>
+    </h2>
+    
+    <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up delay-200">
+      SchemaGemPro empowers developers and SEO experts to construct, validate, and deploy semantic markup with an unparalleled developer experience.
+    </p>
+    
+    <div class="animate-fade-in-up delay-300 flex items-center justify-center gap-6">
+      <a href="{{ url_for('select_schema') }}" class="group relative">
+        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl blur opacity-40 group-hover:opacity-75 transition duration-500 group-hover:duration-200"></div>
+        <div class="relative flex items-center gap-3 bg-slate-900 px-8 py-4 rounded-2xl border border-white/10 text-white font-semibold hover:bg-slate-800 transition-all">
+          Get Started
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </a>
+    </div>
   </div>
+</div>
 
-  <!-- Navbar -->
-  <nav class="flex items-center justify-between px-8 py-4 bg-black/40 backdrop-blur-md">
-    <h1 class="text-2xl font-bold text-indigo-400">RichStruct</h1>
-    <div class="space-x-6 text-sm font-medium flex items-center">
-      <a href="#features" class="hover:text-indigo-400">Features</a>
-      <a href="#preview" class="hover:text-indigo-400">Live Preview</a>
-      {% if current_user.is_authenticated %}
-        <a href="/generate" class="hover:text-indigo-400">Dashboard</a>
-        <a href="/history" class="hover:text-indigo-400">History</a>
-        <a href="/logout" class="bg-red-600 px-4 py-2 rounded-xl shadow hover:bg-red-700 transition">
-          Logout
-        </a>
-      {% else %}
-        <a href="/login" class="bg-indigo-600 px-4 py-2 rounded-xl shadow hover:bg-indigo-700 transition">
-          Login
-        </a>
-      {% endif %}
-    </div>
-  </nav>
-
-  <!-- Flash Messages -->
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div class="max-w-4xl mx-auto mt-4 px-6">
-        {% for category, message in messages %}
-          <div class="p-4 rounded-xl text-center {% if category == 'success' %}bg-green-500/20 text-green-300 border border-green-500/50{% elif category == 'danger' %}bg-red-500/20 text-red-300 border border-red-500/50{% else %}bg-indigo-500/20 text-indigo-300 border border-indigo-500/50{% endif %}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
-
-  <!-- Hero Section -->
-  <section class="text-center py-24 px-6">
-    <h2 class="text-5xl font-extrabold mb-6">Generate & Validate Schema Instantly</h2>
-    <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
-      Create, test, and deploy structured data markup with real-time validation and live preview.
-    </p>
-    <a href="{{ url_for('select_schema') }}" class="btn-primary">Get Started <i class="fas fa-rocket"></i></a>
-  </section>
-
-  <!-- Features -->
-  <section id="features" class="py-20 px-8">
-    <h3 class="text-3xl font-bold text-center mb-12">Core Features</h3>
-    <div class="grid md:grid-cols-3 gap-8">
-
-      <div class="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg hover:scale-105 transition">
-        <h4 class="text-xl font-semibold mb-3 text-indigo-300">Schema Generator</h4>
-        <p>Create structured data for products, reviews, businesses, and more.</p>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg hover:scale-105 transition">
-        <h4 class="text-xl font-semibold mb-3 text-indigo-300">Instant Validator</h4>
-        <p>Check schema syntax instantly with smart error detection.</p>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg hover:scale-105 transition">
-        <h4 class="text-xl font-semibold mb-3 text-indigo-300">SEO Optimization</h4>
-        <p>Boost search visibility using structured data best practices.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Live Preview Section -->
-  <section id="preview" class="py-20 px-8 text-center">
-    <h3 class="text-3xl font-bold mb-10">Live Schema Preview</h3>
-
-    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+<!-- About Section -->
+<section id="about" class="py-12 relative z-10 animate-fade-in-up delay-300">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-slate-900/40 backdrop-blur-xl border border-white/10 p-12 rounded-3xl shadow-2xl relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[80px] rounded-full"></div>
+      <div class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 blur-[80px] rounded-full"></div>
       
-      <!-- Input -->
-      <textarea id="schemaInput" class="w-full h-72 p-4 rounded-xl bg-black/60 border border-indigo-400 text-green-300 font-mono" placeholder="Paste or write JSON-LD schema here..."></textarea>
-
-      <!-- Output -->
-      <pre id="previewBox" class="w-full h-72 p-4 rounded-xl bg-black/60 border border-indigo-400 text-left overflow-auto"></pre>
-
+      <h3 class="text-3xl font-bold mb-6 text-white tracking-tight relative z-10">Crafting the Semantic Web</h3>
+      <p class="text-slate-300 leading-relaxed text-lg relative z-10">
+        SchemaGemPro simplifies the complex process of creating and validating JSON-LD structured data. Built with modern workflows in mind, it provides an intuitive interface that removes the guesswork from schema implementation, ensuring your content is perfectly primed for search engines.
+      </p>
     </div>
-
-    <button onclick="validateSchema()" class="mt-8 bg-indigo-600 px-8 py-3 rounded-xl hover:bg-indigo-700">
-      Validate Schema
-    </button>
-  </section>
-
-  <!-- About -->
-  <section id="about" class="py-20 px-8 text-center">
-    <h3 class="text-3xl font-bold mb-6">About RichStruct</h3>
-    <p class="max-w-3xl mx-auto text-gray-300">
-      RichStruct simplifies structured data creation and validation through an intuitive interface, live preview, and instant error feedback — making schema implementation accessible for everyone.
-    </p>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-black/60 text-center py-6">
-    <p>© 2026 RichStruct — Schema Generator & Validator System</p>
-  </footer>
-
-  <!-- Script -->
-  <script>
-
-    function goLogin(){
-      window.location.href = "/login";
-    }
-
-    function validateSchema() {
-      const input = document.getElementById('schemaInput').value;
-      const preview = document.getElementById('previewBox');
-      try {
-        const parsed = JSON.parse(input);
-        preview.textContent = JSON.stringify(parsed, null, 2);
-        preview.style.color = '#86efac';
-      } catch (err) {
-        preview.textContent = 'Invalid JSON: ' + err.message;
-        preview.style.color = '#fca5a5';
-      }
-    }
-
-  </script>
-
-</body>
-</html>
+  </div>
+</section>
+{% endblock %}

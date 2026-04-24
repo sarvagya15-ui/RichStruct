@@ -1,44 +1,60 @@
 {% extends 'base.html' %}
 
-{% block title %}Product Schema Generator - SchemaGen{% endblock %}
+{% block title %}Product Schema Generator - SchemaGemPro{% endblock %}
 
 {% block content %}
-<div class="form-wrapper">
-    <div class="form-header">
-        <a href="{{ url_for('select_schema') }}" class="back-link"><i class="fas fa-arrow-left"></i> Back to
-            selection</a>
-        <h1><i class="fas fa-shopping-cart"></i> Product Schema Generator</h1>
-        <p>Fill in the details to generate a Google-compliant Product JSON-LD.</p>
+<div class="animate-fade-in-up max-w-3xl mx-auto">
+    <div class="mb-10 text-center">
+        <a href="{{ url_for('select_schema') }}" class="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 font-medium mb-6 transition-colors">
+            <i class="fas fa-arrow-left"></i> Back to selection
+        </a>
+        <h1 class="text-3xl font-extrabold text-white tracking-tight flex items-center justify-center gap-3 mb-3">
+            <i class="fas fa-shopping-cart text-indigo-400"></i> Product Schema Generator
+        </h1>
+        <p class="text-slate-400">Fill in the details to generate a Google-compliant Product JSON-LD.</p>
     </div>
 
-    <form action="{{ url_for('generate_jsonld', schema_type='product') }}" method="POST" class="schema-form">
-        <div class="form-section">
-            <h3>Basic Information</h3>
-            <div class="form-group">
-                <label for="name">Product Name <span class="required">*</span></label>
-                <input type="text" id="name" name="name" placeholder="e.g. iPhone 15 Pro Max" required>
-            </div>
-            <div class="form-group">
-                <label for="brand">Brand Name <span class="required">*</span></label>
-                <input type="text" id="brand" name="brand" placeholder="e.g. Apple" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description"
-                    placeholder="A brief description of the product..."></textarea>
+    <form action="{{ url_for('generate_jsonld', schema_type='product') }}" method="POST" class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden">
+        <!-- Mac-style Terminal Header -->
+        <div class="w-full px-6 py-4 bg-slate-950/40 border-b border-white/5 flex items-center gap-2">
+            <div class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+            <span class="text-[10px] font-mono text-slate-500 ml-auto uppercase tracking-wider">product_builder.exe</span>
+        </div>
+        
+        <div class="p-8">
+        
+        <!-- Basic Information -->
+        <div class="mb-8">
+            <h3 class="text-xs uppercase tracking-widest text-indigo-400 font-bold mb-5 border-b border-white/5 pb-2">Basic Information</h3>
+            <div class="space-y-5">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-slate-300 mb-2">Product Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="name" name="name" placeholder="e.g. iPhone 15 Pro Max" required class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors">
+                </div>
+                <div>
+                    <label for="brand" class="block text-sm font-medium text-slate-300 mb-2">Brand Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="brand" name="brand" placeholder="e.g. Apple" required class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors">
+                </div>
+                <div>
+                    <label for="description" class="block text-sm font-medium text-slate-300 mb-2">Description</label>
+                    <textarea id="description" name="description" placeholder="A brief description of the product..." class="w-full h-28 bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors resize-none"></textarea>
+                </div>
             </div>
         </div>
 
-        <div class="form-section">
-            <h3>Pricing & Inventory</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="price">Price <span class="required">*</span></label>
-                    <input type="number" step="0.01" id="price" name="price" placeholder="e.g. 999.00" required>
+        <!-- Pricing & Inventory -->
+        <div class="mb-8">
+            <h3 class="text-xs uppercase tracking-widest text-indigo-400 font-bold mb-5 border-b border-white/5 pb-2">Pricing & Inventory</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                <div>
+                    <label for="price" class="block text-sm font-medium text-slate-300 mb-2">Price <span class="text-rose-500">*</span></label>
+                    <input type="number" step="0.01" id="price" name="price" placeholder="e.g. 999.00" required class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors">
                 </div>
-                <div class="form-group">
-                    <label for="priceCurrency">Currency <span class="required">*</span></label>
-                    <select id="priceCurrency" name="priceCurrency" required>
+                <div>
+                    <label for="priceCurrency" class="block text-sm font-medium text-slate-300 mb-2">Currency <span class="text-rose-500">*</span></label>
+                    <select id="priceCurrency" name="priceCurrency" required class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors appearance-none">
                         <option value="USD">USD - US Dollar</option>
                         <option value="EUR">EUR - Euro</option>
                         <option value="GBP">GBP - British Pound</option>
@@ -46,9 +62,9 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="availability">Availability</label>
-                <select id="availability" name="availability">
+            <div>
+                <label for="availability" class="block text-sm font-medium text-slate-300 mb-2">Availability</label>
+                <select id="availability" name="availability" class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors appearance-none">
                     <option value="https://schema.org/InStock">In Stock</option>
                     <option value="https://schema.org/OutOfStock">Out of Stock</option>
                     <option value="https://schema.org/PreOrder">Pre-order</option>
@@ -56,103 +72,25 @@
             </div>
         </div>
 
-        <div class="form-section">
-            <h3>Media & URL</h3>
-            <div class="form-group">
-                <label for="image">Image URL <span class="required">*</span></label>
-                <input type="url" id="image" name="image" placeholder="https://example.com/product.jpg" required>
-            </div>
-            <div class="form-group">
-                <label for="url">Product Page URL</label>
-                <input type="url" id="url" name="url" placeholder="https://example.com/product-page">
+        <!-- Media & URL -->
+        <div class="mb-10">
+            <h3 class="text-xs uppercase tracking-widest text-indigo-400 font-bold mb-5 border-b border-white/5 pb-2">Media & URL</h3>
+            <div class="space-y-5">
+                <div>
+                    <label for="image" class="block text-sm font-medium text-slate-300 mb-2">Image URL <span class="text-rose-500">*</span></label>
+                    <input type="url" id="image" name="image" placeholder="https://example.com/product.jpg" required class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors">
+                </div>
+                <div>
+                    <label for="url" class="block text-sm font-medium text-slate-300 mb-2">Product Page URL</label>
+                    <input type="url" id="url" name="url" placeholder="https://example.com/product-page" class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors">
+                </div>
             </div>
         </div>
 
-        <button type="submit" class="btn-submit">Generate JSON-LD <i class="fas fa-magic"></i></button>
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:shadow-[0_0_25px_rgba(79,70,229,0.5)] transition-all flex items-center justify-center gap-2">
+            Generate JSON-LD <i class="fas fa-magic"></i>
+        </button>
+        </div>
     </form>
 </div>
-
-<style>
-    .form-wrapper {
-        max-width: 800px;
-        margin: 2rem auto;
-    }
-
-    .form-header {
-        margin-bottom: 2rem;
-    }
-
-    .back-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--primary);
-        text-decoration: none;
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-        font-weight: 500;
-    }
-
-    .form-header h1 {
-        font-size: 2rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .schema-form {
-        background: var(--card);
-        padding: 2.5rem;
-        border-radius: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .form-section {
-        margin-bottom: 2.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .form-section h3 {
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
-        color: var(--primary);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-
-    .required {
-        color: var(--danger);
-    }
-
-    textarea {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: #0f172a;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 0.5rem;
-        color: white;
-        font-size: 1rem;
-        min-height: 100px;
-        outline: none;
-    }
-
-    select {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: #0f172a;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 0.5rem;
-        color: white;
-        font-size: 1rem;
-        outline: none;
-        cursor: pointer;
-    }
-</style>
 {% endblock %}

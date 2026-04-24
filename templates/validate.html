@@ -1,278 +1,112 @@
 {% extends 'base.html' %}
 
-{% block title %}Schema Validator - SchemaGen{% endblock %}
+{% block title %}Schema Validator - SchemaGemPro{% endblock %}
 
 {% block content %}
-<div class="validator-container">
-    <div class="validator-header">
-        <h1><i class="fas fa-spell-check"></i> JSON-LD Syntax Validator</h1>
-        <p>Paste your JSON-LD code below to check for syntax errors and schema rule violations.</p>
+<div class="animate-fade-in-up max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-extrabold text-white tracking-tight mb-4 flex items-center justify-center gap-3">
+            <i class="fas fa-spell-check text-indigo-400"></i> JSON-LD Syntax Validator
+        </h1>
+        <p class="text-lg text-slate-400">Paste your JSON-LD code below to check for syntax errors and schema rule violations.</p>
     </div>
 
-    <form method="POST" class="validator-form">
-        <div class="editor-section">
-            <label for="json_content">Enter JSON-LD Code:</label>
+    <form method="POST" class="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl mb-12">
+        <div class="mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <label for="json_content" class="text-sm font-semibold text-slate-300">Enter JSON-LD Code:</label>
+                <div class="flex gap-1.5">
+                    <div class="w-3 h-3 rounded-full bg-slate-700"></div>
+                    <div class="w-3 h-3 rounded-full bg-slate-700"></div>
+                    <div class="w-3 h-3 rounded-full bg-slate-700"></div>
+                </div>
+            </div>
             <textarea name="json_content" id="json_content" placeholder='{
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "Example Product"
-}'>{{ input_json }}</textarea>
+}' class="w-full h-80 bg-slate-950/80 border border-white/10 rounded-2xl p-6 text-indigo-300 font-mono text-sm leading-relaxed focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors custom-scrollbar">{{ input_json }}</textarea>
         </div>
-        <button type="submit" class="btn-primary">Validate Code <i class="fas fa-search"></i></button>
+        
+        <div class="flex justify-end">
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3.5 rounded-xl font-semibold transition-all shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:shadow-[0_0_25px_rgba(79,70,229,0.5)] flex items-center gap-2">
+                Validate Code <i class="fas fa-search"></i>
+            </button>
+        </div>
     </form>
 
     {% if report %}
-    <div class="report-section {{ report.status }}">
-        <div class="report-score-box">
-            <div class="score-circle">
-                <span class="score-number">{{ report.score }}</span>
-                <span class="score-label">Score</span>
-            </div>
+    <div class="animate-fade-in-up bg-slate-900/60 backdrop-blur-xl border rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl
+        {% if report.status == 'success' %}border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.1)]
+        {% elif report.status == 'warning' %}border-amber-500/30 shadow-[0_0_40px_rgba(245,158,11,0.1)]
+        {% else %}border-rose-500/30 shadow-[0_0_40px_rgba(225,29,72,0.1)]{% endif %}">
+        
+        <!-- Score Circle -->
+        <div class="relative flex-shrink-0 w-32 h-32 rounded-full border-8 flex flex-col items-center justify-center bg-slate-950/50
+            {% if report.status == 'success' %}border-emerald-500 text-emerald-400
+            {% elif report.status == 'warning' %}border-amber-500 text-amber-400
+            {% else %}border-rose-500 text-rose-400{% endif %}">
+            <span class="text-4xl font-extrabold leading-none">{{ report.score }}</span>
+            <span class="text-xs uppercase tracking-widest mt-1 opacity-80 font-semibold">Score</span>
         </div>
-        <div class="report-text">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-                <h3>{{ report.message }}</h3>
-                <div class="report-stats">
-                    <span class="stat-badge errors">{{ report.error_count }} Errors</span>
-                    <span class="stat-badge warnings">{{ report.warning_count }} Warnings</span>
+
+        <!-- Report Details -->
+        <div class="flex-grow w-full">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+                <h3 class="text-2xl font-bold
+                    {% if report.status == 'success' %}text-emerald-400
+                    {% elif report.status == 'warning' %}text-amber-400
+                    {% else %}text-rose-400{% endif %}">
+                    {{ report.message }}
+                </h3>
+                
+                <div class="flex gap-3">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/20">
+                        {{ report.error_count }} Errors
+                    </span>
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/20">
+                        {{ report.warning_count }} Warnings
+                    </span>
                 </div>
             </div>
-            <p>{{ report.details }}</p>
+            
+            <p class="text-slate-300 text-lg mb-6">{{ report.details }}</p>
 
             {% if report.errors %}
-            <div class="issue-list error-list">
-                <strong>Critical Errors:</strong>
-                <ul>
+            <div class="mt-4 pt-4 border-t border-white/5">
+                <strong class="block text-xs uppercase tracking-widest text-rose-400 mb-3">Critical Errors:</strong>
+                <ul class="space-y-2">
                     {% for err in report.errors %}
-                    <li><i class="fas fa-times-circle"></i> {{ err }}</li>
+                    <li class="flex items-start gap-2 text-slate-300 text-sm">
+                        <i class="fas fa-times-circle text-rose-500 mt-0.5"></i> 
+                        <span>{{ err }}</span>
+                    </li>
                     {% endfor %}
                 </ul>
             </div>
             {% endif %}
 
             {% if report.warnings %}
-            <div class="issue-list warning-list">
-                <strong>Recommendations:</strong>
-                <ul>
+            <div class="mt-4 pt-4 border-t border-white/5">
+                <strong class="block text-xs uppercase tracking-widest text-amber-400 mb-3">Recommendations:</strong>
+                <ul class="space-y-2">
                     {% for warn in report.warnings %}
-                    <li><i class="fas fa-info-circle"></i> {{ warn }}</li>
+                    <li class="flex items-start gap-2 text-slate-300 text-sm">
+                        <i class="fas fa-info-circle text-amber-500 mt-0.5"></i> 
+                        <span>{{ warn }}</span>
+                    </li>
                     {% endfor %}
                 </ul>
             </div>
             {% endif %}
 
-            <div class="result-actions" style="margin-top: 2rem; display: flex; gap: 1rem;">
-                <a href="https://search.google.com/test/rich-results" target="_blank" class="btn-primary"
-                    style="background: var(--accent); padding: 0.8rem 1.5rem; width: auto; font-size: 0.9rem;">
-                    Test on Google <i class="fas fa-external-link-alt"></i>
+            <div class="mt-8">
+                <a href="https://search.google.com/test/rich-results" target="_blank" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-xl font-medium transition-colors border border-white/10">
+                    Test on Google <i class="fas fa-external-link-alt text-sm"></i>
                 </a>
             </div>
         </div>
     </div>
     {% endif %}
 </div>
-
-<style>
-    .validator-container {
-        max-width: 900px;
-        margin: 3rem auto;
-    }
-
-    .validator-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .validator-form {
-        background: var(--card);
-        padding: 2rem;
-        border-radius: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .editor-section {
-        margin-bottom: 1.5rem;
-    }
-
-    .editor-section label {
-        display: block;
-        margin-bottom: 0.75rem;
-        color: var(--text-muted);
-        font-weight: 600;
-    }
-
-    textarea#json_content {
-        width: 100%;
-        height: 350px;
-        background: #0b1120;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 0.75rem;
-        color: #818cf8;
-        padding: 1.5rem;
-        font-family: 'Fira Code', 'Courier New', monospace;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        outline: none;
-        resize: vertical;
-    }
-
-    textarea#json_content:focus {
-        border-color: var(--primary);
-    }
-
-    .report-section {
-        margin-top: 2rem;
-        padding: 2rem;
-        border-radius: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 2.5rem;
-        animation: slideUp 0.3s ease;
-        background: var(--card);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .report-score-box {
-        position: relative;
-        width: 120px;
-        height: 120px;
-    }
-
-    .score-circle {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        border: 8px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    }
-
-    .report-section.success .score-circle {
-        border-color: var(--accent);
-    }
-
-    .report-section.warning .score-circle {
-        border-color: #f59e0b;
-    }
-
-    .report-section.error .score-circle {
-        border-color: var(--danger);
-    }
-
-    .score-number {
-        font-size: 2rem;
-        font-weight: 800;
-        line-height: 1;
-    }
-
-    .score-label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        opacity: 0.7;
-    }
-
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .report-section.success {
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid var(--accent);
-        color: var(--accent);
-    }
-
-    .report-section.warning {
-        background: rgba(245, 158, 11, 0.1);
-        border: 1px solid #f59e0b;
-        color: #f59e0b;
-    }
-
-    .report-section.error {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid var(--danger);
-        color: var(--danger);
-    }
-
-    .report-icon {
-        font-size: 2.5rem;
-        margin-top: 0.5rem;
-    }
-
-    .report-text h3 {
-        margin-bottom: 0.25rem;
-        font-size: 1.2rem;
-    }
-
-    .report-text p {
-        opacity: 0.8;
-        font-size: 0.95rem;
-        margin-bottom: 1rem;
-    }
-
-    .stat-badge {
-        font-size: 0.75rem;
-        padding: 0.2rem 0.6rem;
-        border-radius: 2rem;
-        font-weight: 700;
-        margin-left: 0.5rem;
-    }
-
-    .stat-badge.errors {
-        background: rgba(239, 68, 68, 0.2);
-        color: var(--danger);
-    }
-
-    .stat-badge.warnings {
-        background: rgba(245, 158, 11, 0.2);
-        color: #f59e0b;
-    }
-
-    .issue-list {
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        width: 100%;
-    }
-
-    .issue-list strong {
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    .issue-list ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .issue-list li {
-        font-size: 0.9rem;
-        margin-bottom: 0.4rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .error-list li i {
-        color: var(--danger);
-    }
-
-    .warning-list li i {
-        color: #f59e0b;
-    }
-</style>
 {% endblock %}

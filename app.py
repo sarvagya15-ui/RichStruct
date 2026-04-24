@@ -149,6 +149,14 @@ def generate_jsonld(schema_type):
                           json_data=json_string, 
                           schema_type=schema_type)
 
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    total_schemas = Schema.query.filter_by(user_id=current_user.id).count()
+    recent_schemas = Schema.query.filter_by(user_id=current_user.id).order_by(Schema.created_at.desc()).limit(5).all()
+    total_activities = ActivityLog.query.filter_by(user_id=current_user.id).count()
+    return render_template('dashboard.html', total_schemas=total_schemas, recent_schemas=recent_schemas, total_activities=total_activities)
+
 @app.route('/history')
 @login_required
 def history():

@@ -1,64 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register — RichStruct</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="flex items-center justify-center h-screen font-sans text-white overflow-hidden">
+{% extends 'base.html' %}
 
-  <!-- Video Background -->
-  <div class="fixed inset-0 -z-10 overflow-hidden">
-    <video autoplay muted loop playsinline class="w-full h-full object-cover">
-      <source src="https://media.istockphoto.com/id/2191087265/video/close-up-display-of-technical-coding-scripts-on-a-screen.mp4?s=mp4-640x640-is&k=20&c=dK1JVV6IccTOpa5lYxyMEijzitOpIl9xbpMhH5GS-cg=">
-    </video>
-    <div class="absolute inset-0 bg-black/70"></div>
-  </div>
-  
-  <!-- Register Card -->
-  <div class="bg-white text-black p-10 rounded-2xl shadow-2xl w-96 text-center backdrop-blur-lg">
+{% block title %}Register — SchemaGemPro{% endblock %}
 
-    <h1 class="text-3xl font-bold text-indigo-600 mb-6">Create Account</h1>
+{% block content %}
+<div class="flex items-center justify-center min-h-[70vh] animate-fade-in-up">
+  <div class="relative group w-full max-w-md">
+    <!-- Glow effect behind card -->
+    <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+    
+    <div class="relative bg-slate-900/60 backdrop-blur-xl border border-white/10 p-10 rounded-3xl shadow-2xl">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-white tracking-tight mb-2">Create Account</h1>
+        <p class="text-slate-400">Join SchemaGemPro to start generating schemas</p>
+      </div>
 
-    <!-- Flash Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="mb-4 p-3 rounded-lg text-sm {% if category == 'danger' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
-            {{ message }}
+      <form method="POST" action="/register" class="space-y-6">
+        <div>
+          <label for="username" class="block text-sm font-medium text-slate-300 mb-2">Username</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+              <i class="fas fa-user"></i>
+            </div>
+            <input id="username" name="username" type="text" placeholder="Choose a username" required
+              class="w-full pl-10 pr-4 py-3 bg-slate-950/50 border border-white/10 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white placeholder-slate-500 transition-colors">
           </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+        </div>
 
-    <form method="POST" action="/register">
-      <input id="username" name="username" type="text" placeholder="Username" required
-        class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <div>
+          <label for="email" class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <input id="email" name="email" type="email" placeholder="Enter your email" required
+              class="w-full pl-10 pr-4 py-3 bg-slate-950/50 border border-white/10 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white placeholder-slate-500 transition-colors">
+          </div>
+        </div>
 
-      <input id="email" name="email" type="email" placeholder="Email" required
-        class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <div>
+          <label for="password" class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+              <i class="fas fa-lock"></i>
+            </div>
+            <input id="password" name="password" type="password" placeholder="Create a strong password" required
+              class="w-full pl-10 pr-4 py-3 bg-slate-950/50 border border-white/10 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white placeholder-slate-500 transition-colors">
+          </div>
+        </div>
 
-      <input id="password" name="password" type="password" placeholder="Password" required
-        class="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <button type="submit"
+          class="w-full bg-cyan-600 text-white py-3 rounded-xl font-semibold shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:bg-cyan-500 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all">
+          Register
+        </button>
+      </form>
 
-      <input id="confirm" name="confirm_password" type="password" placeholder="Confirm Password" required
-        class="w-full mb-6 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-
-      <button type="submit"
-        class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
-        Register
-      </button>
-    </form>
-
-    <p class="mt-6 text-sm text-gray-600">
-      Already have an account?
-      <a href="/login" class="text-indigo-600 font-semibold hover:underline">Login</a>
-    </p>
-
+      <div class="mt-8 text-center text-sm text-slate-400">
+        Already have an account? 
+        <a href="/login" class="text-cyan-400 font-semibold hover:text-cyan-300 transition-colors">Sign in here</a>
+      </div>
+    </div>
   </div>
-
-
-
-</body>
-</html>
+</div>
+{% endblock %}

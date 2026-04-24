@@ -1,115 +1,50 @@
 {% extends 'base.html' %}
 
-{% block title %}Activity Log - SchemaGen{% endblock %}
+{% block title %}Activity Log - SchemaGemPro{% endblock %}
 
 {% block content %}
-<div class="activity-container">
-    <div class="activity-header">
-        <h1><i class="fas fa-list-ul"></i> Your Activity Log</h1>
-        <p>A detailed history of your actions within the platform.</p>
+<div class="animate-fade-in-up max-w-4xl mx-auto">
+    <div class="mb-10">
+        <h1 class="text-3xl font-bold text-white flex items-center gap-3">
+            <i class="fas fa-list-ul text-cyan-400"></i> Your Activity Log
+        </h1>
+        <p class="text-slate-400 mt-2">A detailed history of your actions within the platform.</p>
     </div>
 
-    <div class="activity-card">
+    <div class="bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
         {% if logs %}
-        <table class="activity-table">
-            <thead>
-                <tr>
-                    <th>Action</th>
-                    <th>Time</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for log in logs %}
-                <tr>
-                    <td class="action-cell">
-                        <i class="fas fa-circle-notch"></i>
-                        {{ log.action }}
-                    </td>
-                    <td class="time-cell">{{ log.created_at.strftime('%H:%M:%S') }}</td>
-                    <td class="date-cell">{{ log.created_at.strftime('%Y-%m-%d') }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-900/50 border-b border-white/5">
+                        <th class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Action</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Time</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Date</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    {% for log in logs %}
+                    <tr class="hover:bg-white/5 transition-colors group">
+                        <td class="px-6 py-4 flex items-center gap-3 text-sm font-medium text-slate-200 group-hover:text-white transition-colors">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]"></span>
+                            {{ log.action }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-slate-400">{{ log.created_at.strftime('%H:%M:%S') }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-400">{{ log.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% else %}
-        <div class="empty-state">
-            <i class="fas fa-shoe-prints"></i>
-            <h3>No activity recorded yet!</h3>
-            <p>Start using the tool to see your logs here.</p>
+        <div class="text-center py-16 px-6">
+            <div class="w-20 h-20 bg-slate-800/50 rounded-2xl flex items-center justify-center text-slate-500 mx-auto mb-6">
+                <i class="fas fa-shoe-prints text-4xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">No activity recorded yet!</h3>
+            <p class="text-slate-400">Start using the tool to see your logs here.</p>
         </div>
         {% endif %}
     </div>
 </div>
-
-<style>
-    .activity-container {
-        max-width: 900px;
-        margin: 3rem auto;
-    }
-
-    .activity-header {
-        margin-bottom: 2rem;
-    }
-
-    .activity-card {
-        background: var(--card);
-        border-radius: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        overflow: hidden;
-    }
-
-    .activity-table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-    }
-
-    .activity-table th {
-        background: rgba(255, 255, 255, 0.03);
-        padding: 1rem 1.5rem;
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--text-muted);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .activity-table td {
-        padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-        font-size: 0.95rem;
-    }
-
-    .action-cell {
-        font-weight: 500;
-        color: #e2e8f0;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .action-cell i {
-        font-size: 0.5rem;
-        color: var(--primary);
-    }
-
-    .time-cell,
-    .date-cell {
-        color: var(--text-muted);
-        font-size: 0.85rem;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 5rem 2rem;
-        color: var(--text-muted);
-    }
-
-    .empty-state i {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        opacity: 0.5;
-    }
-</style>
 {% endblock %}
