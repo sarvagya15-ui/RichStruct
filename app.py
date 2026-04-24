@@ -169,8 +169,13 @@ def validate():
     validation_report = None
     input_json = ""
     
+    # Check if content is coming from the Result page (GET) or manual entry (POST)
     if request.method == 'POST':
         input_json = request.form.get('json_content')
+    else:
+        input_json = request.args.get('json_content', "")
+
+    if input_json:
         try:
             # Step 1: Basic Syntax Check
             parsed_data = json.loads(input_json)
