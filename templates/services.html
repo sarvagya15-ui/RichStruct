@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Services — SchemaGemPro{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in-up max-w-4xl mx-auto">
+
+  <!-- Header -->
+  <div class="text-center mb-16">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-cyan-300 mb-5">
+      <span class="flex h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
+      Platform Services
+    </div>
+    <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">What would you like to do?</h1>
+    <p class="text-slate-400 text-lg">Choose a service to get started.</p>
+  </div>
+
+  <!-- Two Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+    <!-- Generate Card -->
+    <a href="{{ url_for('select_schema') }}" class="group block relative">
+      <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl blur opacity-0 group-hover:opacity-40 transition duration-500"></div>
+      <div class="relative h-full bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl flex flex-col items-center text-center p-12 transition-all duration-300 group-hover:-translate-y-2 group-hover:bg-slate-900/80 overflow-hidden">
+
+        <!-- Mac-style header bar -->
+        <div class="absolute top-0 left-0 right-0 px-5 py-3 bg-slate-950/50 border-b border-white/5 flex items-center gap-2">
+          <div class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+          <span class="text-[10px] font-mono text-slate-500 ml-auto uppercase tracking-wider">generate.json</span>
+        </div>
+
+        <div class="mt-8 flex flex-col items-center">
+          <div class="w-20 h-20 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-3xl mb-6 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-300 shadow-lg group-hover:shadow-indigo-500/30">
+            <i class="fas fa-code"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-white mb-3">Generate</h2>
+          <p class="text-slate-400 mb-8 leading-relaxed">Create JSON-LD structured data for Products, FAQs, Courses, and more — ready for search engines in seconds.</p>
+          <div class="flex items-center gap-2 text-indigo-400 font-semibold group-hover:text-indigo-300 transition-colors">
+            <span>Start Generating</span>
+            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Validate Card -->
+    <a href="{{ url_for('validate') }}" class="group block relative">
+      <div class="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-3xl blur opacity-0 group-hover:opacity-40 transition duration-500"></div>
+      <div class="relative h-full bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl flex flex-col items-center text-center p-12 transition-all duration-300 group-hover:-translate-y-2 group-hover:bg-slate-900/80 overflow-hidden">
+
+        <!-- Mac-style header bar -->
+        <div class="absolute top-0 left-0 right-0 px-5 py-3 bg-slate-950/50 border-b border-white/5 flex items-center gap-2">
+          <div class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+          <span class="text-[10px] font-mono text-slate-500 ml-auto uppercase tracking-wider">validate.json</span>
+        </div>
+
+        <div class="mt-8 flex flex-col items-center">
+          <div class="w-20 h-20 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-3xl mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-lg group-hover:shadow-emerald-500/30">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-white mb-3">Validate</h2>
+          <p class="text-slate-400 mb-8 leading-relaxed">Instantly validate your JSON-LD schemas against Google guidelines and get a full compliance score and report.</p>
+          <div class="flex items-center gap-2 text-emerald-400 font-semibold group-hover:text-emerald-300 transition-colors">
+            <span>Open Validator</span>
+            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+{% endblock %}

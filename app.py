@@ -26,6 +26,11 @@ with app.app_context():
 def index():
     return render_template('index.html')
 
+@app.route('/services')
+@login_required
+def services():
+    return render_template('services.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
