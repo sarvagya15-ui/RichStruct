@@ -1,53 +1,319 @@
 {% extends 'base.html' %}
 
-{% block title %}SchemaGemPro — Premium Schema Generator{% endblock %}
+{% block title %}RichStruct — Premium Schema Generator{% endblock %}
+
+{% block head %}
+<style>
+  .section-fade { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .section-fade.visible { opacity: 1; transform: translateY(0); }
+  .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+  .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(99,102,241,0.2); border-color: rgba(99,102,241,0.4); }
+  .stat-num { font-variant-numeric: tabular-nums; }
+  .glow-indigo { box-shadow: 0 0 40px rgba(99,102,241,0.15); }
+  .gradient-border { background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(6,182,212,0.2)); }
+  .step-line::after { content: ''; position: absolute; left: 50%; top: 100%; width: 2px; height: 40px; background: linear-gradient(to bottom, rgba(99,102,241,0.5), transparent); transform: translateX(-50%); }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="flex flex-col justify-center items-center relative min-h-[70vh]">
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
-  
-  <div class="text-center px-6 max-w-4xl z-10">
+
+<!-- ═══════════════════════════════════════════════
+     HERO SECTION
+════════════════════════════════════════════════ -->
+<div class="flex flex-col justify-center items-center relative min-h-screen">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-indigo-600/20 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
+
+  <div class="text-center px-6 max-w-5xl z-10">
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-indigo-300 mb-8 animate-fade-in-up">
       <span class="flex h-2 w-2 rounded-full bg-indigo-500 animate-pulse"></span>
       Next-Generation Schema Architecture
     </div>
-    
+
     <h2 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight animate-fade-in-up delay-100">
       Structure the web with <br />
       <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 pb-2 inline-block">
         absolute precision.
       </span>
     </h2>
-    
+
     <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up delay-200">
-      SchemaGemPro empowers developers and SEO experts to construct, validate, and deploy semantic markup with an unparalleled developer experience.
+      RichStruct empowers developers and SEO experts to construct, validate, and deploy semantic markup with an unparalleled developer experience.
     </p>
-    
-    <div class="animate-fade-in-up delay-300 flex items-center justify-center gap-6">
+
+    <div class="animate-fade-in-up delay-300 flex flex-wrap items-center justify-center gap-4">
       <a href="{{ url_for('services') }}" class="group relative">
-        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl blur opacity-40 group-hover:opacity-75 transition duration-500 group-hover:duration-200"></div>
+        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
         <div class="relative flex items-center gap-3 bg-slate-900 px-8 py-4 rounded-2xl border border-white/10 text-white font-semibold hover:bg-slate-800 transition-all">
           Get Started
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </div>
       </a>
+      <a href="#how-it-works" class="flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/10 text-slate-300 hover:text-white hover:border-white/25 font-semibold transition-all">
+        How it Works
+      </a>
     </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500 text-xs animate-bounce">
+    <span>Scroll to explore</span>
+    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
   </div>
 </div>
 
-<!-- About Section -->
-<section id="about" class="py-12 relative z-10 animate-fade-in-up delay-300">
-  <div class="max-w-4xl mx-auto">
-    <div class="bg-slate-900/40 backdrop-blur-xl border border-white/10 p-12 rounded-3xl shadow-2xl relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[80px] rounded-full"></div>
-      <div class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 blur-[80px] rounded-full"></div>
-      
-      <h3 class="text-3xl font-bold mb-6 text-white tracking-tight relative z-10">Crafting the Semantic Web</h3>
-      <p class="text-slate-300 leading-relaxed text-lg relative z-10">
-        SchemaGemPro simplifies the complex process of creating and validating JSON-LD structured data. Built with modern workflows in mind, it provides an intuitive interface that removes the guesswork from schema implementation, ensuring your content is perfectly primed for search engines.
-      </p>
+<!-- ═══════════════════════════════════════════════
+     STATS STRIP
+════════════════════════════════════════════════ -->
+<section class="py-16 section-fade">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    {% for stat in [
+      {'value': '20+', 'label': 'Schema Types', 'icon': 'fa-code', 'color': 'indigo'},
+      {'value': '100%', 'label': 'JSON-LD Valid', 'icon': 'fa-check-circle', 'color': 'emerald'},
+      {'value': 'AI', 'label': 'Powered Generation', 'icon': 'fa-robot', 'color': 'purple'},
+      {'value': '< 2s', 'label': 'Generation Time', 'icon': 'fa-bolt', 'color': 'cyan'}
+    ] %}
+    <div class="bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-center card-hover">
+      <div class="w-12 h-12 mx-auto rounded-xl bg-{{ stat.color }}-500/10 flex items-center justify-center mb-3">
+        <i class="fas {{ stat.icon }} text-{{ stat.color }}-400 text-lg"></i>
+      </div>
+      <p class="stat-num text-3xl font-extrabold text-white mb-1">{{ stat.value }}</p>
+      <p class="text-slate-400 text-sm">{{ stat.label }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SERVICES SECTION
+════════════════════════════════════════════════ -->
+<section id="services" class="py-16 section-fade">
+  <div class="text-center mb-12">
+    <p class="text-indigo-400 text-sm font-semibold uppercase tracking-widest mb-3">Our Services</p>
+    <h3 class="text-4xl font-extrabold text-white tracking-tight">Everything you need for structured data</h3>
+    <p class="text-slate-400 mt-3 max-w-xl mx-auto">A complete toolkit from schema generation to validation — all in one place.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Generate -->
+    <a href="{{ url_for('select_schema') }}" class="group block bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 card-hover">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-500/15 flex items-center justify-center mb-6">
+        <i class="fas fa-code text-indigo-400 text-2xl"></i>
+      </div>
+      <h4 class="text-xl font-bold text-white mb-3">Generate Schema</h4>
+      <p class="text-slate-400 leading-relaxed mb-6">Instantly create JSON-LD markup for Articles, Products, FAQs, Events, and 20+ more schema types — powered by AI.</p>
+      <span class="inline-flex items-center gap-2 text-indigo-400 font-semibold text-sm group-hover:gap-3 transition-all">
+        Start Generating <i class="fas fa-arrow-right text-xs"></i>
+      </span>
+    </a>
+
+    <!-- Validate -->
+    <a href="{{ url_for('validate') }}" class="group block bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 card-hover">
+      <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 flex items-center justify-center mb-6">
+        <i class="fas fa-shield-alt text-emerald-400 text-2xl"></i>
+      </div>
+      <h4 class="text-xl font-bold text-white mb-3">Validate Schema</h4>
+      <p class="text-slate-400 leading-relaxed mb-6">Paste any JSON-LD and get instant feedback on errors, warnings, and structural issues before deploying to production.</p>
+      <span class="inline-flex items-center gap-2 text-emerald-400 font-semibold text-sm group-hover:gap-3 transition-all">
+        Start Validating <i class="fas fa-arrow-right text-xs"></i>
+      </span>
+    </a>
+
+    <!-- History -->
+    <a href="{{ url_for('history') }}" class="group block bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 card-hover">
+      <div class="w-14 h-14 rounded-2xl bg-amber-500/15 flex items-center justify-center mb-6">
+        <i class="fas fa-history text-amber-400 text-2xl"></i>
+      </div>
+      <h4 class="text-xl font-bold text-white mb-3">Schema History</h4>
+      <p class="text-slate-400 leading-relaxed mb-6">Access every schema you've ever generated. Review, copy, or re-export past schemas without starting from scratch.</p>
+      <span class="inline-flex items-center gap-2 text-amber-400 font-semibold text-sm group-hover:gap-3 transition-all">
+        View History <i class="fas fa-arrow-right text-xs"></i>
+      </span>
+    </a>
+
+    <!-- Dashboard -->
+    <a href="{{ url_for('dashboard') }}" class="group block bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 card-hover">
+      <div class="w-14 h-14 rounded-2xl bg-purple-500/15 flex items-center justify-center mb-6">
+        <i class="fas fa-chart-bar text-purple-400 text-2xl"></i>
+      </div>
+      <h4 class="text-xl font-bold text-white mb-3">Dashboard</h4>
+      <p class="text-slate-400 leading-relaxed mb-6">Get a bird's-eye view of your schema activity, generation stats, and recent actions — all on one analytics dashboard.</p>
+      <span class="inline-flex items-center gap-2 text-purple-400 font-semibold text-sm group-hover:gap-3 transition-all">
+        Open Dashboard <i class="fas fa-arrow-right text-xs"></i>
+      </span>
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     HOW IT WORKS
+════════════════════════════════════════════════ -->
+<section id="how-it-works" class="py-16 section-fade">
+  <div class="text-center mb-12">
+    <p class="text-cyan-400 text-sm font-semibold uppercase tracking-widest mb-3">Workflow</p>
+    <h3 class="text-4xl font-extrabold text-white tracking-tight">From zero to valid schema in minutes</h3>
+    <p class="text-slate-400 mt-3 max-w-xl mx-auto">Three simple steps to production-ready structured data.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+    {% for step in [
+      {'num': '01', 'icon': 'fa-list-alt', 'color': 'indigo', 'title': 'Choose Your Schema Type', 'desc': 'Pick from 20+ schema types including Article, Product, FAQ, Event, Recipe, LocalBusiness, and more.'},
+      {'num': '02', 'icon': 'fa-keyboard', 'color': 'purple', 'title': 'Fill in the Details', 'desc': 'Enter your content details into the smart form. Our AI assists you in structuring the data correctly.'},
+      {'num': '03', 'icon': 'fa-rocket', 'color': 'cyan', 'title': 'Copy & Deploy', 'desc': 'Copy the generated JSON-LD, paste it into your page\'s <head>, and watch your rich results soar.'}
+    ] %}
+    <div class="relative bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 card-hover">
+      <div class="w-10 h-10 rounded-xl bg-{{ step.color }}-500/15 flex items-center justify-center mb-5">
+        <i class="fas {{ step.icon }} text-{{ step.color }}-400"></i>
+      </div>
+      <span class="text-5xl font-extrabold text-white/5 absolute top-6 right-8 select-none">{{ step.num }}</span>
+      <h4 class="text-lg font-bold text-white mb-3">{{ step.title }}</h4>
+      <p class="text-slate-400 leading-relaxed text-sm">{{ step.desc }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FEATURES SECTION
+════════════════════════════════════════════════ -->
+<section id="features" class="py-16 section-fade">
+  <div class="text-center mb-12">
+    <p class="text-purple-400 text-sm font-semibold uppercase tracking-widest mb-3">Features</p>
+    <h3 class="text-4xl font-extrabold text-white tracking-tight">Built for serious structured data</h3>
+    <p class="text-slate-400 mt-3 max-w-xl mx-auto">Every feature crafted to make your SEO workflow faster and error-free.</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    {% for feat in [
+      {'icon': 'fa-bolt', 'color': 'yellow', 'title': 'AI-Powered', 'desc': 'Gemini AI fills and structures your schema intelligently, reducing manual effort.'},
+      {'icon': 'fa-check-double', 'color': 'emerald', 'title': 'Real-Time Validation', 'desc': 'Catch errors immediately as you type with our live validation engine.'},
+      {'icon': 'fa-layer-group', 'color': 'indigo', 'title': '20+ Schema Types', 'desc': 'Full support for all major Schema.org types used by Google, Bing, and more.'},
+      {'icon': 'fa-file-code', 'color': 'cyan', 'title': 'Clean JSON-LD Output', 'desc': 'Get properly formatted, minifiable JSON-LD ready to paste into any CMS or codebase.'},
+      {'icon': 'fa-history', 'color': 'amber', 'title': 'Schema History', 'desc': 'Never lose your work. Every schema is saved and accessible from your history.'},
+      {'icon': 'fa-user-shield', 'color': 'purple', 'title': 'Secure & Private', 'desc': 'Your data stays yours. Schemas are tied to your account and never shared.'}
+    ] %}
+    <div class="bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 card-hover">
+      <div class="w-10 h-10 rounded-xl bg-{{ feat.color }}-500/10 flex items-center justify-center mb-4">
+        <i class="fas {{ feat.icon }} text-{{ feat.color }}-400"></i>
+      </div>
+      <h4 class="text-white font-bold mb-2">{{ feat.title }}</h4>
+      <p class="text-slate-400 text-sm leading-relaxed">{{ feat.desc }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     ABOUT / WHY SECTION
+════════════════════════════════════════════════ -->
+<section id="about" class="py-16 section-fade">
+  <div class="bg-slate-900/40 backdrop-blur-xl border border-white/10 p-12 rounded-3xl shadow-2xl relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+
+    <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <div>
+        <p class="text-indigo-400 text-sm font-semibold uppercase tracking-widest mb-3">About RichStruct</p>
+        <h3 class="text-3xl font-bold text-white tracking-tight mb-5">Crafting the Semantic Web, one schema at a time.</h3>
+        <p class="text-slate-300 leading-relaxed mb-5">
+          RichStruct simplifies the complex process of creating and validating JSON-LD structured data. Built with modern workflows in mind, it provides an intuitive interface that removes the guesswork from schema implementation.
+        </p>
+        <p class="text-slate-400 leading-relaxed">
+          Whether you're a solo developer or part of a large SEO team, RichStruct ensures your content is perfectly primed for rich results in search engines — every single time.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        {% for item in [
+          {'icon': 'fa-search', 'color': 'indigo', 'label': 'Better SEO'},
+          {'icon': 'fa-star', 'color': 'amber', 'label': 'Rich Results'},
+          {'icon': 'fa-tachometer-alt', 'color': 'cyan', 'label': 'Faster Indexing'},
+          {'icon': 'fa-sitemap', 'color': 'purple', 'label': 'Structured Data'}
+        ] %}
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col items-center text-center gap-2 card-hover">
+          <i class="fas {{ item.icon }} text-{{ item.color }}-400 text-xl"></i>
+          <span class="text-white text-sm font-semibold">{{ item.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </section>
+
+<!-- ═══════════════════════════════════════════════
+     SCHEMA TYPES STRIP
+════════════════════════════════════════════════ -->
+<section class="py-16 section-fade">
+  <div class="text-center mb-10">
+    <p class="text-slate-400 text-sm font-semibold uppercase tracking-widest mb-3">Supported Schema Types</p>
+    <h3 class="text-3xl font-extrabold text-white">All the schema types you'll ever need</h3>
+  </div>
+  <div class="flex flex-wrap gap-3 justify-center">
+    {% for t in ['Article', 'Product', 'FAQ', 'Event', 'Recipe', 'LocalBusiness', 'JobPosting', 'Review', 'BreadcrumbList', 'VideoObject', 'HowTo', 'Organization', 'Person', 'Movie', 'Book', 'Course', 'NewsArticle', 'SoftwareApplication', 'WebPage', 'Service'] %}
+    <span class="px-4 py-2 rounded-full bg-slate-800/60 border border-white/10 text-slate-300 text-sm font-medium hover:border-indigo-500/50 hover:text-indigo-300 transition-all cursor-default">
+      {{ t }}
+    </span>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CTA SECTION
+════════════════════════════════════════════════ -->
+<section class="py-16 section-fade">
+  <div class="relative bg-gradient-to-br from-indigo-600/20 via-purple-600/10 to-cyan-600/20 border border-indigo-500/20 rounded-3xl p-12 text-center overflow-hidden">
+    <div class="absolute inset-0 bg-slate-900/50 rounded-3xl"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-indigo-500/20 blur-[80px] rounded-full pointer-events-none"></div>
+    <div class="relative z-10">
+      <h3 class="text-4xl font-extrabold text-white mb-4">Ready to boost your SEO?</h3>
+      <p class="text-slate-300 mb-8 max-w-lg mx-auto leading-relaxed">Start generating production-ready structured data today. No configuration needed — just results.</p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('select_schema') }}" class="group relative">
+          <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl blur opacity-50 group-hover:opacity-80 transition duration-300"></div>
+          <div class="relative bg-slate-900 px-8 py-4 rounded-2xl border border-white/10 text-white font-bold hover:bg-slate-800 transition-all flex items-center gap-2">
+            <i class="fas fa-code"></i> Generate Schema Now
+          </div>
+        </a>
+        <a href="{{ url_for('validate') }}" class="px-8 py-4 rounded-2xl border border-white/15 text-slate-300 hover:text-white hover:border-white/30 font-semibold transition-all">
+          <i class="fas fa-shield-alt mr-2"></i>Validate Schema
+        </a>
+        {% else %}
+        <a href="/register" class="group relative">
+          <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl blur opacity-50 group-hover:opacity-80 transition duration-300"></div>
+          <div class="relative bg-slate-900 px-8 py-4 rounded-2xl border border-white/10 text-white font-bold hover:bg-slate-800 transition-all">
+            Create Free Account
+          </div>
+        </a>
+        <a href="/login" class="px-8 py-4 rounded-2xl border border-white/15 text-slate-300 hover:text-white hover:border-white/30 font-semibold transition-all">
+          Sign In
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Intersection Observer for section fade-ins
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.section-fade').forEach(el => observer.observe(el));
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
 {% endblock %}
